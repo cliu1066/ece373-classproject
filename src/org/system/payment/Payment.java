@@ -1,5 +1,60 @@
 package org.system.payment;
 
-public class Payment {
+import java.time.LocalDateTime;
 
+public class Payment {
+	private String UUID;
+	private String bookingID;
+	private double amount;
+	private PaymentStatus status;
+	private LocalDateTime timestamp;
+	
+	public Payment() {
+		this.status = PaymentStatus.INITIATED;
+		this.timestamp = LocalDateTime.now();
+	}
+	
+	public String getUUID() {
+		return UUID;
+	}
+	
+	public void setUUID(String aUUID) {
+		this.UUID = aUUID;
+	}
+	
+	public String getBookingID() {
+		return bookingID;
+	}
+	
+	public void setBookingID(String aBookingID) {
+		this.bookingID = aBookingID;
+	}
+	
+	public double getAmount() {
+		return amount;
+	}
+	
+	public void setAmount(double aAmount) {
+		this.amount = aAmount;
+	}
+	
+	public PaymentStatus getPaymentStatus() {
+		return status;
+	}
+	
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}
+	
+	public boolean validateCard(Card card) {
+		return true;
+	}
+	
+	public PaymentStatus process(Card card) {
+		return PaymentStatus.APPROVED;
+	}
+	
+	public String toString() {
+		return "Payment ID: " + UUID + " Amount: " + amount + " Status: " + status.name();
+	}
 }
