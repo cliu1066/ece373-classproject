@@ -1,5 +1,34 @@
 package org.system.search;
 
-public class FlightSearchCriteria {
+import java.time.LocalDate;
 
+public class FlightSearchCriteria extends SearchCriteria {
+	private String destination;
+	private LocalDate date;
+	
+	public FlightSearchCriteria() {
+		super();
+	}
+	
+	public String getDestination() {
+		return destination;
+	}
+	
+	public void setDestination(String aDestination) {
+		destination = aDestination;
+	}
+	
+	public LocalDate getDate() {
+		return date;
+	}
+	
+	public void setDate(LocalDate aDate) {
+		this.date = aDate;
+	}
+	
+	public String toString() {
+		return "Search Criteria:\n\t" + 
+				"Destination: " + (destination != null ? destination : "N/A") + 
+				" Date: " + (date != null ? date : "N/A") + " Price: " + priceRange;
+	}
 }
