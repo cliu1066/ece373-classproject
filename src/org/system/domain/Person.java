@@ -1,6 +1,6 @@
 package org.system.domain;
 
-public class Person {
+public abstract class Person {
 	protected String UUID;
 	protected String name;
 	
