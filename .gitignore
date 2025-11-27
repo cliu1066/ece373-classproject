@@ -1,0 +1,11 @@
+# Eclipse Specific
+.classpath
+.project
+.settings/
+
+# Java Build
+bin/
+build/
+target/
+out/
+
