@@ -14,6 +14,14 @@ public class Payment {
 		this.timestamp = LocalDateTime.now();
 	}
 	
+	public Payment(String aUUID, String aBookingID, double aAmount) {
+		this.UUID = aUUID;
+		this.bookingID = aBookingID;
+		this.amount = aAmount;
+		this.status = PaymentStatus.INITIATED;
+		this.timestamp = LocalDateTime.now();
+	}
+	
 	public String getUUID() {
 		return UUID;
 	}
@@ -47,10 +55,22 @@ public class Payment {
 	}
 	
 	public boolean validateCard(Card card) {
-		return true;
+		if (card == null) {
+			return false;
+		}
+		if (card.getType() != CardType.VISA || card.getType() != CardType.MASTERCARD) {
+			return false;
+		}
+		return !card.isExpired();
 	}
 	
 	public PaymentStatus process(Card card) {
+		if (!validateCard(card)) {
+			status = PaymentStatus.DECLINED;
+			System.out.println("Invalid card. Please try again.");
+			return PaymentStatus.DECLINED;
+		}
+		status = PaymentStatus.APPROVED;
 		return PaymentStatus.APPROVED;
 	}
 	

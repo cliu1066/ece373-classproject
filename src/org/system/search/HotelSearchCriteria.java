@@ -16,7 +16,7 @@ public class HotelSearchCriteria extends SearchCriteria {
 		this.location = aLocation;
 	}
 	
-	public Integer getRatin() {
+	public Integer getRating() {
 		return rating;
 	}
 	

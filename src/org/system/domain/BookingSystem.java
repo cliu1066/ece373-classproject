@@ -1,0 +1,90 @@
+package org.system.domain;
+
+import org.system.people.*;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class BookingSystem {
+	private List<FlightListing> flights;
+	private List<HotelListing> hotels;
+	private List<Booking> bookings;
+	private List<Customer> customers;
+	private List<Admin> admins;
+	
+	public BookingSystem() {
+		flights = new ArrayList<>();
+		hotels = new ArrayList<>();
+		bookings = new ArrayList<>();
+		customers = new ArrayList<>();
+		admins = new ArrayList<>();
+	}
+	
+	public List<FlightListing> getFlights() {
+		return flights;
+	}
+	
+	public List<HotelListing> getHotels() {
+		return hotels;
+	}
+	
+	public List<Booking> getBookings() {
+		return bookings;
+	}
+	
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+	
+	public List<Admin> getAdmins() {
+		return admins;
+	}
+	
+	public void printFlights() {
+		for (FlightListing flight : flights) {
+			System.out.println(flight);
+		}
+	}
+	
+	public void printHotels() {
+		for (HotelListing hotel : hotels) {
+			System.out.println(hotel);
+		}
+	}
+	
+	public void printBookings() {
+		for (Booking booking : bookings) {
+			System.out.println(booking);
+		}
+	}
+	
+	public void printCustomers() {
+		for (Customer customer : customers) {
+			System.out.println(customer);
+		}
+	}
+	
+	public void printAdmins() {
+		for (Admin admin : admins) {
+			System.out.println(admin);
+		}
+	}
+	
+	public FlightListing getFlightByID(String aUUID) {
+		for (FlightListing flight : flights) {
+			if (flight.getUUID().equals(aUUID)) {
+				return flight;
+			}
+		}
+		return null;
+	}
+	
+	public HotelListing getHotelByID(String aUUID) {
+		for (HotelListing hotel : hotels) {
+			if (hotel.getUUID().equals(aUUID)) {
+				return hotel;
+			}
+		}
+		return null;
+	}
+}

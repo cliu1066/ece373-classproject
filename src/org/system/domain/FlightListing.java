@@ -13,6 +13,13 @@ public class FlightListing extends Listing {
 		super();
 	}
 	
+	public FlightListing(String aUUID, String aDestination, LocalDate aDate, double aPrice, String aAirline) {
+		super(aUUID, aPrice);
+		this.destination = aDestination;
+		this.date = aDate;
+		this.airline = aAirline;
+	}
+	
 	public String getDestination() {
 		return destination;
 	}
@@ -38,6 +45,19 @@ public class FlightListing extends Listing {
 	}
 	
 	public boolean matches(SearchCriteria criteria) {
+		if (!(criteria instanceof FlightSearchCriteria) || !isAvailable) {
+			return false;
+		}
+		FlightSearchCriteria fsc = (FlightSearchCriteria)criteria;
+		if (fsc.getDestination() != null && !destination.equals(fsc.getDestination())) {
+			return false;
+		}
+		if (fsc.getDate() != null && !date.equals(fsc.getDate())) {
+			return false;
+		}
+		if (fsc.getPriceRange() != null && !fsc.getPriceRange().inRange(price)) {
+			return false;
+		}
 		return true;
 	}
 	

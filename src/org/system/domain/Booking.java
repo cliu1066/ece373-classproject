@@ -2,6 +2,8 @@ package org.system.domain;
 
 import java.time.LocalDateTime;
 
+import org.system.people.Customer;
+
 public abstract class Booking {
 	protected String UUID;
 	protected double total;
@@ -10,11 +12,16 @@ public abstract class Booking {
 	protected Customer customer;
 	
 	public Booking() {
-		this.UUID = "";
-		this.total = 0d;
 		this.status = BookingStatus.CREATED;
 		this.createdDateTime = LocalDateTime.now();
-		this.customer = null;
+	}
+	
+	public Booking(String aUUID, double aTotal, Customer aCustomer) {
+		this.UUID = aUUID;
+		this.total = aTotal;
+		this.status = BookingStatus.CREATED;
+		this.createdDateTime = LocalDateTime.now();
+		this.customer = aCustomer;
 	}
 	
 	public String getUUID() {
@@ -51,15 +58,21 @@ public abstract class Booking {
 	
 	// Methods
 	public boolean cancel() {
-		return true;
+		if (status == BookingStatus.CREATED || status == BookingStatus.PENDING_PAYMENT) {
+			status = BookingStatus.CANCELED;
+			return true;
+		}
+		return false;
 	}
 	
 	public void markPaid(String paymentID) {
-		
+		status = BookingStatus.PAID;
 	}
 	
-	public void setBookingStatus() {
-		
+	public void setPendingPayment() {
+		if (status == BookingStatus.CREATED) {
+			status = BookingStatus.PENDING_PAYMENT;
+		}
 	}
 	
 	public String toString() {

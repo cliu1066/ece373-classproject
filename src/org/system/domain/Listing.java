@@ -11,6 +11,12 @@ public abstract class Listing {
 		this.isAvailable = true;
 	}
 	
+	public Listing(String aUUID, double aPrice) {
+		this.UUID = aUUID;
+		this.price = aPrice;
+		this.isAvailable = true;
+	}
+	
 	public String getUUID() {
 		return UUID;
 	}

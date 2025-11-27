@@ -1,4 +1,4 @@
-package org.system.domain;
+package org.system.people;
 
 public abstract class Person {
 	protected String UUID;
@@ -7,6 +7,11 @@ public abstract class Person {
 	public Person() {
 		this.UUID = "";
 		this.name = "";
+	}
+	
+	public Person(String aUUID, String aName) {
+		this.UUID = aUUID;
+		this.name = aName;
 	}
 	
 	public String getUUID() {
