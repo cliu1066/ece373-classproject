@@ -2,7 +2,7 @@ package org.system.search;
 
 public class HotelSearchCriteria extends SearchCriteria {
 	private String location;
-	private Integer rating;
+	private Double rating;
 	
 	public HotelSearchCriteria() {
 		super();
@@ -16,11 +16,11 @@ public class HotelSearchCriteria extends SearchCriteria {
 		this.location = aLocation;
 	}
 	
-	public Integer getRating() {
+	public Double getRating() {
 		return rating;
 	}
 	
-	public void setRating(Integer aRating) {
+	public void setRating(Double aRating) {
 		this.rating = aRating;
 	}
 	

@@ -7,6 +7,7 @@ import org.system.domain.FlightBooking;
 import org.system.domain.FlightListing;
 import org.system.domain.HotelBooking;
 import org.system.domain.HotelListing;
+import org.system.domain.BookingSystem;
 import org.system.payment.Card;
 import org.system.payment.Payment;
 import org.system.payment.PaymentStatus;
@@ -61,20 +62,22 @@ public class Customer extends Person {
 		return matches;
 	}
 	
-	public FlightBooking confirmFlightBooking(FlightListing listing) {
+	public FlightBooking bookFlight(FlightListing listing, BookingSystem bookingSystem) {
 		String bookingID = "FB" + System.currentTimeMillis();
 		FlightBooking booking = new FlightBooking(bookingID, listing.getPrice(), listing.getUUID(), this);
 		booking.setPendingPayment();
 		bookingHistory.add(booking);
+		bookingSystem.addBooking(booking);
 		return booking;
 	}
 	
-	public HotelBooking confirmHotelBooking(HotelListing listing, int nights) {
+	public HotelBooking bookHotel(HotelListing listing, int nights, BookingSystem bookingSystem) {
 		String bookingID = "HB" + System.currentTimeMillis();
 		double total = listing.getPrice() * nights;
 		HotelBooking booking = new HotelBooking(bookingID, total, listing.getUUID(), nights, this);
 		booking.setPendingPayment();
 		bookingHistory.add(booking);
+		bookingSystem.addBooking(booking);
 		return booking;
 	}
 	
@@ -86,6 +89,9 @@ public class Customer extends Person {
 		if (result == PaymentStatus.APPROVED) {
 			booking.markPaid(paymentID);
 		}
+		else {
+			System.out.println("Payment failed. Please try again.");
+		}
 		return payment;
 	}
 	
@@ -93,8 +99,25 @@ public class Customer extends Person {
 		return bookingHistory;
 	}
 	
+	public void printBookingHistory() {
+		for (Booking booking : bookingHistory) {
+			System.out.println(booking);
+		}
+	}
+	
 	public void addBooking(Booking booking) {
 		bookingHistory.add(booking);
+	}
+	
+	public boolean cancelBooking(String bookingID) {
+		for (Booking booking : bookingHistory) {
+			if (booking.getUUID().equals(bookingID)) {
+				if (booking.cancel()) {
+					return bookingHistory.remove(booking);
+				}
+			}
+		}
+		return false;
 	}
 	
 	public String toString() {

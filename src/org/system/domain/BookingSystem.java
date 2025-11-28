@@ -87,4 +87,24 @@ public class BookingSystem {
 		}
 		return null;
 	}
+	
+	public boolean addAdmin(Admin aAdmin) {
+		return admins.add(aAdmin);
+	}
+	
+	public boolean removeAdmin(Admin aAdmin) {
+		return admins.remove(aAdmin);
+	}
+	
+	public boolean addCustomer(Customer aCustomer) {
+		return customers.add(aCustomer);
+	}
+	
+	public boolean removeCustomer(Customer aCustomer) {
+		return customers.remove(aCustomer);
+	}
+
+	public boolean addBooking(Booking aBooking) {
+		return bookings.add(aBooking);
+	}
 }

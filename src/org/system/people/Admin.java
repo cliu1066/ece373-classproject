@@ -2,12 +2,7 @@ package org.system.people;
 
 import java.util.*;
 
-import org.system.domain.Booking;
-import org.system.domain.BookingStatus;
-import org.system.domain.FlightBooking;
-import org.system.domain.FlightListing;
-import org.system.domain.HotelBooking;
-import org.system.domain.HotelListing;
+import org.system.domain.*;
 
 public class Admin extends Person {
 	public Admin() {

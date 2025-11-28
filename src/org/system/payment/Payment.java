@@ -58,7 +58,7 @@ public class Payment {
 		if (card == null) {
 			return false;
 		}
-		if (card.getType() != CardType.VISA || card.getType() != CardType.MASTERCARD) {
+		if (card.getType() != CardType.VISA && card.getType() != CardType.MASTERCARD) {
 			return false;
 		}
 		return !card.isExpired();

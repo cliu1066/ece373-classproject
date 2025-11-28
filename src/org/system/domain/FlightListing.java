@@ -62,6 +62,6 @@ public class FlightListing extends Listing {
 	}
 	
 	public String toString() {
-		return "Flight ID: " + UUID + " Airline: " + airline + " Destination: " + destination + "\n\tPrice: " + price + "Available (Y/N): " + (isAvailable ? "Y" : "N"); 
+		return "Flight ID: " + UUID + "\n\tAirline: " + airline + "\n\tDestination: " + destination + "\n\tPrice: " + price + "\n\tAvailable (Y/N): " + (isAvailable ? "Y" : "N"); 
 	}
 }

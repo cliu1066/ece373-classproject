@@ -8,7 +8,12 @@ public class Card {
 	private LocalDate expiresOn;
 	
 	public Card() {
-		
+	}
+	
+	public Card(String aNumber, CardType aType, LocalDate aDate) {
+		this.number = aNumber;
+		this.type = aType;
+		this.expiresOn = aDate;
 	}
 	
 	public String getNumber() {

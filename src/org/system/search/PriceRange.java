@@ -9,6 +9,11 @@ public class PriceRange {
 		this.max = null;
 	}
 	
+	public PriceRange(Double aMin, Double aMax) {
+		this.min = aMin;
+		this.max = aMax;
+	}
+	
 	public Double getMin() {
 		return min;
 	}

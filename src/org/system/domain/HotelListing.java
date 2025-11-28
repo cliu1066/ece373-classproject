@@ -5,14 +5,14 @@ import org.system.search.HotelSearchCriteria;
 
 public class HotelListing extends Listing {
 	private String location;
-	private int rating;
+	private double rating;
 	private String name;
 	
 	public HotelListing() {
 		super();
 	}
 	
-	public HotelListing(String aUUID, String aLocation, int aRating, double aPrice, String aName) {
+	public HotelListing(String aUUID, String aLocation, double aRating, double aPrice, String aName) {
 		super(aUUID, aPrice);
 		this.location = aLocation;
 		this.rating = aRating;
@@ -27,11 +27,11 @@ public class HotelListing extends Listing {
 		this.location = aLocation;
 	}
 	
-	public int getRating() {
+	public double getRating() {
 		return rating;
 	}
 	
-	public void setRating(int aRating) {
+	public void setRating(double aRating) {
 		this.rating = aRating;
 	}
 	
@@ -61,6 +61,6 @@ public class HotelListing extends Listing {
 	}
 	
 	public String toString() {
-		return "Hotel ID: " + UUID + " Name: " + name + "Location: " + location + "\n\tRating: " + rating + " Price/Night: " + price + " Available (Y/N): " + (isAvailable ? "Y" : "N");
+		return "Hotel ID: " + UUID + "\n\tName: " + name + "\n\tLocation: " + location + "\n\tRating: " + rating + "\n\tPrice/Night: " + price + "\n\tAvailable (Y/N): " + (isAvailable ? "Y" : "N");
 	}
 }
