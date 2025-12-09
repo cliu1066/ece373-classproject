@@ -1,6 +1,7 @@
 package org.system.test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import org.system.domain.*;
 import org.system.payment.*;
@@ -45,6 +46,18 @@ public class Driver2 {
 		c2.setUUID("C002");
 		c2.setEmail("barack@email.com");
 		bs.addCustomer(c2);
+		
+		// get flight listings from csv
+		ArrayList<FlightListing> flights = FlightListing.parseFlightData("flights.csv");
+		for (FlightListing fl : flights) {
+			a1.addFlight(fl, bs.getFlights());
+		}
+		
+		// get hotel listing from csv
+		ArrayList<HotelListing> hotels = HotelListing.parseHotelData("hotels.csv");
+		for (HotelListing hl : hotels) {
+			a2.addHotel(hl, bs.getHotels());
+		}
 		
 		// instantiate GUI
 		newGUI = new BookingSystemGUI(bs);

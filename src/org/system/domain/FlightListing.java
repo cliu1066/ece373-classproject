@@ -107,6 +107,15 @@ public class FlightListing extends Listing {
 				String line = scanner.nextLine();
 				String[] splitLine = line.split(",");
 				
+				String uuid = "FL" + System.currentTimeMillis();
+				String departure = splitLine[0].trim();
+				String destination = splitLine[1].trim();
+				LocalDate date = LocalDate.parse(splitLine[3]);
+				int price = Integer.valueOf(splitLine[4]);
+				String airline = splitLine[5];
+				
+				FlightListing fl = new FlightListing(uuid, departure, destination, date, price, airline);
+				flights.add(fl);
 			}
 		}
 		catch (FileNotFoundException e) {

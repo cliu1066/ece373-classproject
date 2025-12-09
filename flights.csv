@@ -1,0 +1,21 @@
+Starting Point,Destination,Max Capacity,Date,Price,Airline
+ATL,SEA,5,2026-03-14,329,Delta Air Lines
+DFW,MIA,3,2026-04-02,220,American Airlines
+ORD,NRT,4,2026-05-19,1150,United Airlines
+BOS,MCO,5,2026-02-28,179,JetBlue
+FRA,JFK,3,2026-06-28,860,Lufthansa
+PHX,SAN,4,2026-03-03,145,Southwest Airlines
+DXB,LAX,5,2026-05-26,1390,Emirates
+PDX,ANC,3,2026-04-12,310,Alaska Airlines
+YYZ,YVR,4,2026-03-22,280,Air Canada
+LHR,ORD,5,2026-07-01,940,British Airways
+LAS,DEN,4,2026-02-19,89,Spirit Airlines
+DOH,SFO,4,2026-07-14,1310,Qatar Airways
+HNL,LAX,5,2026-03-30,520,Hawaiian Airlines
+CDG,ATL,3,2026-05-03,890,Air France
+MSP,DEN,4,2026-02-27,120,Frontier Airlines
+AMS,SAN,5,2026-06-22,1020,KLM
+DUB,BCN,3,2026-04-18,95,Ryanair
+IST,IAD,4,2026-06-30,980,Turkish Airlines
+SIN,LAX,3,2026-07-21,1420,Singapore Airlines
+GRU,MIA,5,2026-03-17,760,LATAM

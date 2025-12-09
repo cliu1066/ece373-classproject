@@ -94,6 +94,14 @@ public class HotelListing extends Listing {
 				String line = scanner.nextLine();
 				String[] splitLine = line.split(",");
 				
+				String uuid = "HL" + System.currentTimeMillis();
+				String location = splitLine[0];
+				String name = splitLine[1];
+				double rating = Double.valueOf(splitLine[2]);
+				double price = Double.valueOf(splitLine[3]);
+				
+				HotelListing hl = new HotelListing(uuid, location, rating, price, name);
+				hotels.add(hl);
 			}
 		}
 		catch (FileNotFoundException e) {
