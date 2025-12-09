@@ -2,7 +2,9 @@ package org.system.people;
 
 import java.util.*;
 
-import org.system.domain.*;
+import org.system.booking.*;
+import org.system.listing.FlightListing;
+import org.system.listing.HotelListing;
 
 /*
  * Class: Admin

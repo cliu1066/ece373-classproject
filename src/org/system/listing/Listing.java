@@ -1,4 +1,4 @@
-package org.system.domain;
+package org.system.listing;
 
 import org.system.search.SearchCriteria;
 
