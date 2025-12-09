@@ -84,13 +84,20 @@ public class BookingSystemGUI extends JFrame {
         JMenu adminMenu = new JMenu("Admin");
         JMenuItem addFlightItem = new JMenuItem("Add Flight");
         addFlightItem.addActionListener(e -> showCard(CARD_ADMIN_ADD_FLIGHT));
+
         JMenuItem updateFlightItem = new JMenuItem("Update Flight");
         updateFlightItem.addActionListener(e -> showCard(CARD_ADMIN_UPDATE_FLIGHT));
+
         JMenuItem hotelsItem = new JMenuItem("Remove / Update Hotels");
         hotelsItem.addActionListener(e -> showCard(CARD_ADMIN_HOTELS));
+
+        JMenuItem printFlightsItem = new JMenuItem("Print All Flights");
+        printFlightsItem.addActionListener(e -> showAllFlights());   // << NEW LINE
+
         adminMenu.add(addFlightItem);
         adminMenu.add(updateFlightItem);
         adminMenu.add(hotelsItem);
+        adminMenu.add(printFlightsItem); 
 
         //  Customer 
         JMenu customerMenu = new JMenu("Customer");
@@ -245,6 +252,32 @@ public class BookingSystemGUI extends JFrame {
                 ", Customer=" + customerEmail +
                 ", Created=" + b.getCreatedDateTime();
     }
+
+    private void showAllFlights() {
+    StringBuilder sb = new StringBuilder();
+
+    java.util.List<FlightListing> flights = bookingSystem.getFlights();
+    if (flights.isEmpty()) {
+        sb.append("There are currently no flights in the system.");
+    } else {
+        sb.append("All Flights in  the system:\n\n");
+        for (FlightListing f : flights) {
+            sb.append(f.toString()).append("\n\n");
+        }
+    }
+
+    JTextArea area = new JTextArea(sb.toString(), 20, 60);
+    area.setEditable(false);
+    JScrollPane scrollPane = new JScrollPane(area);
+
+    JOptionPane.showMessageDialog(
+            this,
+            scrollPane,
+            "All Flights",
+            JOptionPane.INFORMATION_MESSAGE
+    );
+}
+
     /*  WELCOME PANEL  */
 
     private class WelcomePanel extends JPanel {
