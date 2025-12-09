@@ -1,5 +1,7 @@
-package org.system.domain;
+package org.system.booking;
 
+import org.system.listing.FlightListing;
+import org.system.listing.HotelListing;
 import org.system.people.*;
 
 import java.util.*;
@@ -12,6 +14,8 @@ import java.io.*;
  * and print them.
  */
 public class BookingSystem implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private List<FlightListing> flights;
 	private List<HotelListing> hotels;
 	private List<Booking> bookings;

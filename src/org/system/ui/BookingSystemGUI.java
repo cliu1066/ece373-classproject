@@ -8,7 +8,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import javax.swing.*;
-import org.system.domain.*;
+
+import org.system.booking.*;
+import org.system.listing.FlightListing;
+import org.system.listing.HotelListing;
 import org.system.payment.*;
 import org.system.people.*;
 

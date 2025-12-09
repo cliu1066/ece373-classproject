@@ -1,6 +1,8 @@
 package org.system.test;
 
-import org.system.domain.*;
+import org.system.booking.*;
+import org.system.listing.FlightListing;
+import org.system.listing.HotelListing;
 import org.system.payment.*;
 import org.system.people.*;
 import org.system.search.*;
