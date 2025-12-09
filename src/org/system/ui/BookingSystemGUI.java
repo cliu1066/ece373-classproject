@@ -334,8 +334,7 @@ public class BookingSystemGUI extends JFrame {
             departureField = new JTextField(15);
             add(departureField, gbc);   
 
-            gbc.gridwidth = 1;
-            gbc.gridy++;
+            gbc.gridx = 0; gbc.gridy++;
             add(new JLabel("Destination:"), gbc);
             gbc.gridx = 1;
             destinationField = new JTextField(15);
