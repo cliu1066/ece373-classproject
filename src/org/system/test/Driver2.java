@@ -17,6 +17,7 @@ public class Driver2 {
 		// create customers
 		Customer c1 = new Customer();
 		Customer c2 = new Customer();
+		Customer c3 = new Customer();
 		
 		// create admins
 		Admin a1 = new Admin();
@@ -46,6 +47,11 @@ public class Driver2 {
 		c2.setUUID("C002");
 		c2.setEmail("barack@email.com");
 		bs.addCustomer(c2);
+		
+		c3.setName("Candice");
+		c3.setUUID("C002");
+		c3.setEmail("barack@email.com");
+		bs.addCustomer(c3);
 		
 		// get flight listings from csv
 		ArrayList<FlightListing> flights = FlightListing.parseFlightData("flights.csv");
