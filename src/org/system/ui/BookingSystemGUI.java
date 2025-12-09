@@ -78,9 +78,9 @@ public class BookingSystemGUI extends JFrame {
         // File
         JMenu fileMenu = new JMenu("File");
         JMenuItem saveItem = new JMenuItem("Save");
-        saveItem.addActionListener(this::onSave);
+        saveItem.addActionListener(e -> onSave());
         JMenuItem loadItem = new JMenuItem("Load");
-        loadItem.addActionListener(this::onLoad);
+        loadItem.addActionListener(e -> onLoad());
         JMenuItem closeItem = new JMenuItem("Close");
         closeItem.addActionListener(e -> dispose());
         fileMenu.add(saveItem);
@@ -103,7 +103,7 @@ public class BookingSystemGUI extends JFrame {
         JMenuItem addHotelItem = new JMenuItem("Add Hotel");               
         addHotelItem.addActionListener(e -> showCard(CARD_ADMIN_ADD_HOTEL));
 
-        JMenuItem hotelsItem = new JMenuItem("Remove / Update Hotels");
+        JMenuItem hotelsItem = new JMenuItem("Remove/Update Hotels");
         hotelsItem.addActionListener(e -> showCard(CARD_ADMIN_HOTELS));
 
         adminMenu.add(addFlightItem);
@@ -180,51 +180,20 @@ public class BookingSystemGUI extends JFrame {
         cardLayout.show(cardPanel, cardName);
     }
     
-    private void onSave(ActionEvent e) {
-        JFileChooser chooser = new JFileChooser();
-        int result = chooser.showSaveDialog(this);
-        if (result != JFileChooser.APPROVE_OPTION) return;
-
-        File file = chooser.getSelectedFile();
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
-            out.writeObject(bookingSystem);
-            JOptionPane.showMessageDialog(this,
-                    "System saved successfully.",
-                    "Save", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this,
-                    "Error saving system:\n" + ex.getMessage() +
-                            "\n\nMake sure BookingSystem and all domain classes implement java.io.Serializable.",
-                    "Save Error", JOptionPane.ERROR_MESSAGE);
-        }
+    private void onSave() {
+    	BookingSystem.saveData(bookingSystem);
+		JOptionPane.showMessageDialog(null,  "Booking system saved!");
     }
 
-    private void onLoad(ActionEvent e) {
-        JFileChooser chooser = new JFileChooser();
-        int result = chooser.showOpenDialog(this);
-        if (result != JFileChooser.APPROVE_OPTION) return;
-
-        File file = chooser.getSelectedFile();
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
-            Object obj = in.readObject();
-            if (obj instanceof BookingSystem) {
-                bookingSystem = (BookingSystem) obj;
-                if (searchPanel != null) searchPanel.refreshFromSystem();
-                JOptionPane.showMessageDialog(this,
-                        "System loaded successfully.",
-                        "Load", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "The selected file does not contain a BookingSystem object.",
-                        "Load Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this,
-                    "Error loading system:\n" + ex.getMessage(),
-                    "Load Error", JOptionPane.ERROR_MESSAGE);
-        }
+    private void onLoad() {
+    	BookingSystem newBookingSystem = BookingSystem.loadData();
+		if (newBookingSystem != null) {
+			bookingSystem = newBookingSystem;
+			JOptionPane.showMessageDialog(null, "Booking system loaded!");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "No booking system found!");
+		}
     }
 
     /** Find customer by email (case-insensitive). */
@@ -269,29 +238,79 @@ public class BookingSystemGUI extends JFrame {
     }
 
     private void showAllFlights() {
-    StringBuilder sb = new StringBuilder();
-
-    java.util.List<FlightListing> flights = bookingSystem.getFlights();
-    if (flights.isEmpty()) {
-        sb.append("There are currently no flights in the system.");
-    } else {
-        sb.append("All Flights in  the system:\n\n");
-        for (FlightListing f : flights) {
-            sb.append(f.toString()).append("\n\n");
-        }
+	    StringBuilder sb = new StringBuilder();
+	
+	    List<FlightListing> flights = bookingSystem.getFlights();
+	    if (flights.isEmpty()) {
+	        sb.append("There are currently no flights in the system.");
+	    } else {
+	        sb.append("All flights in the system:\n\n");
+	        for (FlightListing f : flights) {
+	            sb.append(f.toString()).append("\n\n");
+	        }
+	    }
+	
+	    JTextArea area = new JTextArea(sb.toString(), 20, 60);
+	    area.setEditable(false);
+	    JScrollPane scrollPane = new JScrollPane(area);
+	
+	    JOptionPane.showMessageDialog(
+	            this,
+	            scrollPane,
+	            "All Flights",
+	            JOptionPane.INFORMATION_MESSAGE
+	    		);
     }
-
-    JTextArea area = new JTextArea(sb.toString(), 20, 60);
-    area.setEditable(false);
-    JScrollPane scrollPane = new JScrollPane(area);
-
-    JOptionPane.showMessageDialog(
-            this,
-            scrollPane,
-            "All Flights",
-            JOptionPane.INFORMATION_MESSAGE
-    );
-}
+	    
+	private void showAllHotels() {
+		StringBuilder sb = new StringBuilder();
+		
+		List<HotelListing> hotels = bookingSystem.getHotels();
+		if (hotels.isEmpty()) {
+			sb.append("There are currently no hotels in the system.");
+		} else {
+			sb.append("All hotels in the system:\n\n");
+			for (HotelListing h : hotels) {
+				sb.append(h.toString()).append("\n\n");
+			}
+		}
+		
+		JTextArea area = new JTextArea(sb.toString(), 20, 60);
+	    area.setEditable(false);
+	    JScrollPane scrollPane = new JScrollPane(area);
+	
+	    JOptionPane.showMessageDialog(
+	            this,
+	            scrollPane,
+	            "All Hotels",
+	            JOptionPane.INFORMATION_MESSAGE
+	    		);
+	}
+	
+	private void showAllBookings() {
+		StringBuilder sb = new StringBuilder();
+		
+		List<Booking> bookings = bookingSystem.getBookings();
+		if (bookings.isEmpty()) {
+			sb.append("There are currently no bookings in the system.");
+		} else {
+			sb.append("All bookings in the system:\n\n");
+			for (Booking b : bookings) {
+				sb.append(b.toString()).append("\n\n");
+			}
+		}
+		
+		JTextArea area = new JTextArea(sb.toString(), 20, 60);
+	    area.setEditable(false);
+	    JScrollPane scrollPane = new JScrollPane(area);
+	
+	    JOptionPane.showMessageDialog(
+	            this,
+	            scrollPane,
+	            "All Bookings",
+	            JOptionPane.INFORMATION_MESSAGE
+	    		);
+	}
 
     /*  WELCOME PANEL  */
 
@@ -974,7 +993,7 @@ public class BookingSystemGUI extends JFrame {
         CustomerBookPanel() {
             setLayout(new BorderLayout());
 
-            JLabel title = new JLabel("Customer: Book Flights & Hotel", SwingConstants.CENTER);
+            JLabel title = new JLabel("Customer: Book Flights & Hotels", SwingConstants.CENTER);
             title.setFont(title.getFont().deriveFont(Font.BOLD, 16f));
             add(title, BorderLayout.NORTH);
 

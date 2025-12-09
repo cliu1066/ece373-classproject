@@ -51,8 +51,8 @@ public class Driver2 {
 		bs.addCustomer(c2);
 		
 		c3.setName("Candice");
-		c3.setUUID("C002");
-		c3.setEmail("barack@email.com");
+		c3.setUUID("C003");
+		c3.setEmail("candice@email.com");
 		bs.addCustomer(c3);
 		
 		// get flight listings from csv

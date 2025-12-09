@@ -3,6 +3,7 @@ package org.system.listing;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -103,14 +104,16 @@ public class FlightListing extends Listing {
 		
 		try {
 			scanner = new Scanner(fileIn);
+			scanner.nextLine();
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 				String[] splitLine = line.split(",");
+				DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 				
 				String uuid = "FL" + System.currentTimeMillis();
 				String departure = splitLine[0].trim();
 				String destination = splitLine[1].trim();
-				LocalDate date = LocalDate.parse(splitLine[3]);
+				LocalDate date = LocalDate.parse(splitLine[3].trim(), fmt);
 				int price = Integer.valueOf(splitLine[4]);
 				String airline = splitLine[5];
 				

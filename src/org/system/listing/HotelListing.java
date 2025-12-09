@@ -90,6 +90,7 @@ public class HotelListing extends Listing {
 		
 		try {
 			scanner = new Scanner(fileIn);
+			scanner.nextLine();
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 				String[] splitLine = line.split(",");
