@@ -1,5 +1,7 @@
 package org.system.booking;
 
+import java.io.Serializable;
+
 import org.system.people.Customer;
 
 /*
@@ -7,7 +9,7 @@ import org.system.people.Customer;
  * The FlightBooking class is a child of the Booking parent class. It contains getters/setters
  * and a toString() method specific to booking flights.
  */
-public class FlightBooking extends Booking {
+public class FlightBooking extends Booking implements Serializable {
 	private String flightID;
 	
 	public FlightBooking() {

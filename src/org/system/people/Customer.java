@@ -7,13 +7,14 @@ import org.system.listing.HotelListing;
 import org.system.payment.*;
 
 import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
  * Class: Customer
  * Child class of Person. Implements travel booking actions from a customer's perspective.
  */
-public class Customer extends Person {
+public class Customer extends Person implements Serializable {
 	private String email;
 	private List<Booking> bookingHistory;
 	

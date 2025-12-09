@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.Serializable;
 
 import org.system.search.SearchCriteria;
 import org.system.search.FlightSearchCriteria;
@@ -15,7 +16,7 @@ import org.system.search.FlightSearchCriteria;
  * The FlightListing class is a child of the abstract Listing class. It contains more
  * methods and fields specific to flight listings.
  */
-public class FlightListing extends Listing {
+public class FlightListing extends Listing implements Serializable {
 	private String departure;
 	private String destination;
 	private LocalDate date;
@@ -92,8 +93,8 @@ public class FlightListing extends Listing {
 	}
 	
 	public String toString() {
-		return "Flight ID: " + UUID + "\n\tAirline: " + airline + "\n\tDeparture: " + departure +
-				"\n\tDestination: " + destination + "\n\tPrice: " + price + "\n\tAvailable (Y/N): " +
+		return "Flight ID: " + UUID + " Airline: " + airline + " Departure: " + departure +
+				" Destination: " + destination + " Price: " + price + " Available (Y/N): " +
 				(isAvailable ? "Y" : "N"); 
 	}
 	
@@ -105,12 +106,13 @@ public class FlightListing extends Listing {
 		try {
 			scanner = new Scanner(fileIn);
 			scanner.nextLine();
+			int i = 5;
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 				String[] splitLine = line.split(",");
 				DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 				
-				String uuid = "FL" + System.currentTimeMillis();
+				String uuid = "FL" + ((i < 10) ? "0" : "0") + String.valueOf(i);
 				String departure = splitLine[0].trim();
 				String destination = splitLine[1].trim();
 				LocalDate date = LocalDate.parse(splitLine[3].trim(), fmt);
@@ -119,6 +121,7 @@ public class FlightListing extends Listing {
 				
 				FlightListing fl = new FlightListing(uuid, departure, destination, date, price, airline);
 				flights.add(fl);
+				i++;
 			}
 		}
 		catch (FileNotFoundException e) {

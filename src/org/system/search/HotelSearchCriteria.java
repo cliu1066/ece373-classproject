@@ -1,11 +1,13 @@
 package org.system.search;
 
+import java.io.Serializable;
+
 /*
  * Class: HotelSearchCriteria
  * The HotelSearchCriteria class is a child of SearchCriteria with additional
  * hotel searching fields (notably location and rating).
  */
-public class HotelSearchCriteria extends SearchCriteria {
+public class HotelSearchCriteria extends SearchCriteria implements Serializable {
 	private String location;
 	private Double rating;
 	

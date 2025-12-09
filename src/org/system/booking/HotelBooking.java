@@ -1,5 +1,5 @@
 package org.system.booking;
-
+import java.io.Serializable;
 import org.system.people.Customer;
 
 /*
@@ -8,7 +8,7 @@ import org.system.people.Customer;
  * and a toString() method specific to booking hotels.
  */
 
-public class HotelBooking extends Booking {
+public class HotelBooking extends Booking implements Serializable {
 	private String hotelID;
 	private int nights;
 	

@@ -1,13 +1,14 @@
 package org.system.search;
 
 import java.time.LocalDate;
+import java.io.Serializable;
 
 /*
  * Class: FlightSearchCriteria
  * The FlightSearchCriteria class is a child of SearchCriteria with additional
  * flight searching fields (notably destination and date).
  */
-public class FlightSearchCriteria extends SearchCriteria {
+public class FlightSearchCriteria extends SearchCriteria implements Serializable {
 	private String departure;
 	private String destination;
 	private LocalDate date;

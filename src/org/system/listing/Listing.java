@@ -1,5 +1,7 @@
 package org.system.listing;
 
+import java.io.Serializable;
+
 import org.system.search.SearchCriteria;
 
 /*
@@ -7,7 +9,7 @@ import org.system.search.SearchCriteria;
  * The Listing class is an abstract class for flight/hotel listings. This class contains
  * constructors and getters/setters for the fields.
  */
-public abstract class Listing {
+public abstract class Listing implements Serializable {
 	protected String UUID;
 	protected double price;
 	protected boolean isAvailable;

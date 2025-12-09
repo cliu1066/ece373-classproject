@@ -1,5 +1,6 @@
 package org.system.people;
 
+import java.io.Serializable;
 import java.util.*;
 
 import org.system.booking.*;
@@ -10,7 +11,7 @@ import org.system.listing.HotelListing;
  * Class: Admin
  * Child class of Person. Implements travel booking system admin related tasks.
  */
-public class Admin extends Person {
+public class Admin extends Person implements Serializable {
 	public Admin() {
 		super();
 	}
