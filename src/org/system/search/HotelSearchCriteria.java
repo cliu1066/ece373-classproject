@@ -1,5 +1,10 @@
 package org.system.search;
 
+/*
+ * Class: HotelSearchCriteria
+ * The HotelSearchCriteria class is a child of SearchCriteria with additional
+ * hotel searching fields (notably location and rating).
+ */
 public class HotelSearchCriteria extends SearchCriteria {
 	private String location;
 	private Double rating;

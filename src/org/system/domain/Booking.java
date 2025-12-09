@@ -4,6 +4,11 @@ import java.time.LocalDateTime;
 
 import org.system.people.Customer;
 
+/*
+ * Class: Booking
+ * The Booking class is an abstract class for flight/hotel booking child classes. This class
+ * mostly contains getters/setters and methods to mark/change booking statuses.
+ */
 public abstract class Booking {
 	protected String UUID;
 	protected double total;
@@ -56,7 +61,10 @@ public abstract class Booking {
 		this.customer = aCustomer;
 	}
 	
-	// Methods
+	/*
+	 * cancel() - Set booking status to CANCELED if current status is CREATED or PENDING_PAYMENT.
+	 * @return true if status set to CANCELED, false otherwise
+	 */
 	public boolean cancel() {
 		if (status == BookingStatus.CREATED || status == BookingStatus.PENDING_PAYMENT) {
 			status = BookingStatus.CANCELED;
@@ -69,6 +77,9 @@ public abstract class Booking {
 		status = BookingStatus.PAID;
 	}
 	
+	/*
+	 * setPendingPayment() - Set payment status to PENDING_PAYMENT if current status is CREATED.
+	 */
 	public void setPendingPayment() {
 		if (status == BookingStatus.CREATED) {
 			status = BookingStatus.PENDING_PAYMENT;
@@ -76,6 +87,7 @@ public abstract class Booking {
 	}
 	
 	public String toString() {
-		return "Booking ID: " + UUID + " Status: " + status + "\n\tTotal: " + total + " Created: " + createdDateTime;
+		return "Booking ID: " + UUID + " Status: " + status + "\n\tTotal: " +
+				total + " Created: " + createdDateTime;
 	}
 }

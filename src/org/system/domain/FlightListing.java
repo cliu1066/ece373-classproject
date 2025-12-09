@@ -4,6 +4,11 @@ import java.time.LocalDate;
 import org.system.search.SearchCriteria;
 import org.system.search.FlightSearchCriteria;
 
+/*
+ * Class: FlightListing
+ * The FlightListing class is a child of the abstract Listing class. It contains more
+ * methods and fields specific to flight listings.
+ */
 public class FlightListing extends Listing {
 	private String destination;
 	private LocalDate date;
@@ -13,7 +18,8 @@ public class FlightListing extends Listing {
 		super();
 	}
 	
-	public FlightListing(String aUUID, String aDestination, LocalDate aDate, double aPrice, String aAirline) {
+	public FlightListing(String aUUID, String aDestination, LocalDate aDate, double aPrice,
+						String aAirline) {
 		super(aUUID, aPrice);
 		this.destination = aDestination;
 		this.date = aDate;
@@ -44,6 +50,11 @@ public class FlightListing extends Listing {
 		this.airline = aAirline;
 	}
 	
+	/*
+	 * matches(criteria) - Determines if current object matches the search criteria
+	 * @param criteria - SearchCriteria object with fields for search/match
+	 * @return true if criteria matches current fields, false if not
+	 */
 	public boolean matches(SearchCriteria criteria) {
 		if (!(criteria instanceof FlightSearchCriteria) || !isAvailable) {
 			return false;
@@ -62,6 +73,8 @@ public class FlightListing extends Listing {
 	}
 	
 	public String toString() {
-		return "Flight ID: " + UUID + "\n\tAirline: " + airline + "\n\tDestination: " + destination + "\n\tPrice: " + price + "\n\tAvailable (Y/N): " + (isAvailable ? "Y" : "N"); 
+		return "Flight ID: " + UUID + "\n\tAirline: " + airline + "\n\tDestination: " +
+				destination + "\n\tPrice: " + price + "\n\tAvailable (Y/N): " +
+				(isAvailable ? "Y" : "N"); 
 	}
 }

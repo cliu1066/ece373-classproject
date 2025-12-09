@@ -2,6 +2,12 @@ package org.system.domain;
 
 import org.system.people.Customer;
 
+/*
+ * Class: HotelBooking
+ * The HotelBooking class is a child of the Booking parent class. It contains getters/setters
+ * and a toString() method specific to booking hotels.
+ */
+
 public class HotelBooking extends Booking {
 	private String hotelID;
 	private int nights;

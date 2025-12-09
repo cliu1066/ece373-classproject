@@ -1,20 +1,16 @@
 package org.system.people;
 
-import org.system.search.FlightSearchCriteria;
-import org.system.search.HotelSearchCriteria;
-import org.system.domain.Booking;
-import org.system.domain.FlightBooking;
-import org.system.domain.FlightListing;
-import org.system.domain.HotelBooking;
-import org.system.domain.HotelListing;
-import org.system.domain.BookingSystem;
-import org.system.payment.Card;
-import org.system.payment.Payment;
-import org.system.payment.PaymentStatus;
+import org.system.search.*;
+import org.system.domain.*;
+import org.system.payment.*;
 
 import java.util.List;
 import java.util.ArrayList;
 
+/*
+ * Class: Customer
+ * Child class of Person. Implements travel booking actions from a customer's perspective.
+ */
 public class Customer extends Person {
 	private String email;
 	private List<Booking> bookingHistory;
@@ -40,6 +36,13 @@ public class Customer extends Person {
 		}
 	}
 	
+	/*
+	 * searchFlights(criteria, flights) - Returns a list of flights matching
+	 * the given search criteria
+	 * @param criteria - FlightSearchCriteria object to match
+	 * @param flights - list of FlightListing objects to search through
+	 * @return list of FlightListing objects that match the criteria
+	 */
 	public List<FlightListing> searchFlights(FlightSearchCriteria criteria, 
 												List<FlightListing> flights) {
 		List<FlightListing> matches = new ArrayList<>();
@@ -51,6 +54,13 @@ public class Customer extends Person {
 		return matches;
 	}
 	
+	/*
+	 * searchHotels(criteria, hotels) - Returns a list of hotels matching
+	 * the given search criteria
+	 * @param criteria - HotelSearchCriteria object to match
+	 * @param hotels - list of HotelListing objects to search through
+	 * @return list of HotelListing objects that match the criteria
+	 */
 	public List<HotelListing> searchHotels(HotelSearchCriteria criteria,
 												List<HotelListing> hotels) {
 		List<HotelListing> matches = new ArrayList<>();
@@ -62,6 +72,12 @@ public class Customer extends Person {
 		return matches;
 	}
 	
+	/*
+	 * bookFlight(listing, bookingSystem) - Creates a new flight booking
+	 * @param listing - FlightListing object to book
+	 * @param bookingSystem - BookingSystem to register the booking with
+	 * @return FlightBooking object with pending payment status
+	 */
 	public FlightBooking bookFlight(FlightListing listing, BookingSystem bookingSystem) {
 		String bookingID = "FB" + System.currentTimeMillis();
 		FlightBooking booking = new FlightBooking(bookingID, listing.getPrice(), listing.getUUID(), this);
@@ -71,6 +87,13 @@ public class Customer extends Person {
 		return booking;
 	}
 	
+	/*
+	 * bookHotel(listing, nights, bookingSystem) - Creates a new hotel booking
+	 * @param listing - HotelListing object to book
+	 * @param nights - integer number of nights to book
+	 * @param bookingSystem - BookingSystem to register the booking with
+	 * @return HotelBooking object with pending payment status
+	 */
 	public HotelBooking bookHotel(HotelListing listing, int nights, BookingSystem bookingSystem) {
 		String bookingID = "HB" + System.currentTimeMillis();
 		double total = listing.getPrice() * nights;
@@ -81,6 +104,11 @@ public class Customer extends Person {
 		return booking;
 	}
 	
+	/*
+	 * pay(booking, card) - Processes payment for a booking using the provided card
+	 * @param booking - Booking object to pay for
+	 * @param card - Card object to use for payment
+	 */
 	public Payment pay(Booking booking, Card card) {
 		String paymentID = "P" + System.currentTimeMillis();
 		Payment payment = new Payment(paymentID, booking.getUUID(), booking.getTotal());
@@ -109,6 +137,11 @@ public class Customer extends Person {
 		bookingHistory.add(booking);
 	}
 	
+	/*
+	 * cancelBooking(bookingID) - Cancels a booking and removes it from history
+	 * @param bookingID - String ID to match/search for a booking
+	 * @return true if booking successfully cancelled and removed
+	 */
 	public boolean cancelBooking(String bookingID) {
 		for (Booking booking : bookingHistory) {
 			if (booking.getUUID().equals(bookingID)) {

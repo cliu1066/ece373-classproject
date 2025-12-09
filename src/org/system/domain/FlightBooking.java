@@ -2,6 +2,11 @@ package org.system.domain;
 
 import org.system.people.Customer;
 
+/*
+ * Class: FlightBooking
+ * The FlightBooking class is a child of the Booking parent class. It contains getters/setters
+ * and a toString() method specific to booking flights.
+ */
 public class FlightBooking extends Booking {
 	private String flightID;
 	

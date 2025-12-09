@@ -2,6 +2,11 @@ package org.system.search;
 
 import java.time.LocalDate;
 
+/*
+ * Class: FlightSearchCriteria
+ * The FlightSearchCriteria class is a child of SearchCriteria with additional
+ * flight searching fields (notably destination and date).
+ */
 public class FlightSearchCriteria extends SearchCriteria {
 	private String destination;
 	private LocalDate date;

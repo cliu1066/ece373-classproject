@@ -1,5 +1,10 @@
 package org.system.search;
 
+/*
+ * Class: SearchCriteria
+ * The abstract class SearchCriteria contains the information used when wanting to search
+ * and filter through listings (hotel or flight).
+ */
 public abstract class SearchCriteria {
 	protected PriceRange priceRange;
 	

@@ -1,5 +1,8 @@
 package org.system.people;
 
+/*
+ * Class: Person
+ */
 public abstract class Person {
 	protected String UUID;
 	protected String name;

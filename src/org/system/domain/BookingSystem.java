@@ -5,6 +5,12 @@ import org.system.people.*;
 import java.util.List;
 import java.util.ArrayList;
 
+/*
+ * Class: BookingSystem
+ * The BookingSystem class is the top level class connecting the whole travel booking
+ * system. It contains methods to access the different fields/objects of the system
+ * and print them.
+ */
 public class BookingSystem {
 	private List<FlightListing> flights;
 	private List<HotelListing> hotels;
@@ -70,6 +76,11 @@ public class BookingSystem {
 		}
 	}
 	
+	/*
+	 * getFlightByID(aUUID) - Get FlightListing object from a UUID
+	 * @param aUUID - String ID to search flight listings
+	 * @return FlightListing object matching aUUID or null if no match
+	 */
 	public FlightListing getFlightByID(String aUUID) {
 		for (FlightListing flight : flights) {
 			if (flight.getUUID().equals(aUUID)) {
@@ -79,6 +90,11 @@ public class BookingSystem {
 		return null;
 	}
 	
+	/*
+	 * getHotelByID(aUUID) - Get HotelListing object from a UUID
+	 * @param aUUID - String ID to search hotel listings
+	 * @return HotelListing object matching aUUID or null if no match
+	 */
 	public HotelListing getHotelByID(String aUUID) {
 		for (HotelListing hotel : hotels) {
 			if (hotel.getUUID().equals(aUUID)) {

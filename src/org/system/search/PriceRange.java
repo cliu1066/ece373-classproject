@@ -1,5 +1,9 @@
 package org.system.search;
 
+/*
+ * Class: PriceRange
+ * The PriceRange class represents a range of prices used for searching listings.
+ */
 public class PriceRange {
 	private Double min;
 	private Double max;
@@ -30,6 +34,11 @@ public class PriceRange {
 		this.max = aMax;
 	}
 	
+	/*
+	 * inRange(aPrice) - Checks if a price is within the price range
+	 * @param aPrice - double price value to check
+	 * @return boolean true if price in range
+	 */
 	public boolean inRange(double aPrice) {
 		return (min == null || aPrice >= min) && (max == null || aPrice <= max);
 	}

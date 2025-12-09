@@ -2,6 +2,11 @@ package org.system.domain;
 
 import org.system.search.SearchCriteria;
 
+/*
+ * Class: Listing
+ * The Listing class is an abstract class for flight/hotel listings. This class contains
+ * constructors and getters/setters for the fields.
+ */
 public abstract class Listing {
 	protected String UUID;
 	protected double price;

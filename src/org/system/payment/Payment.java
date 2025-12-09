@@ -2,6 +2,10 @@ package org.system.payment;
 
 import java.time.LocalDateTime;
 
+/*
+ * Class: Payment
+ * The Payment class 
+ */
 public class Payment {
 	private String UUID;
 	private String bookingID;
@@ -54,6 +58,11 @@ public class Payment {
 		return timestamp;
 	}
 	
+	/*
+	 * validateCard(card) - Checks if a card is of valid type and date
+	 * @param card - Card type object
+	 * @return boolean true if valid
+	 */
 	public boolean validateCard(Card card) {
 		if (card == null) {
 			return false;
@@ -61,9 +70,17 @@ public class Payment {
 		if (card.getType() != CardType.VISA && card.getType() != CardType.MASTERCARD) {
 			return false;
 		}
-		return !card.isExpired();
+		if (card.isExpired()) {
+			return false;
+		}
+		return true;
 	}
 	
+	/*
+	 * process(card) - Sets payment status to DECLINED if invalid card
+	 * @param card - Card type object
+	 * @return PaymentStatus DECLINED or APPROVED
+	 */
 	public PaymentStatus process(Card card) {
 		if (!validateCard(card)) {
 			status = PaymentStatus.DECLINED;

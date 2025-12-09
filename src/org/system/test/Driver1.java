@@ -191,29 +191,29 @@ public class Driver1 {
 		
 		// test payments
 		System.out.println("\nTest payments");
-		Payment p1 = c1.pay(fb1, card1);
 		System.out.println("Customer 1 pays for flight booking 1");
+		Payment p1 = c1.pay(fb1, card1);
 		System.out.println("Flight payment status: " + p1.getPaymentStatus());
 		System.out.println("Flight booking status: " + fb1.getStatus());
 		
-		Payment p2 = c1.pay(hb1, card1);
 		System.out.println("\nCustomer 1 pays for hotel booking 1");
+		Payment p2 = c1.pay(hb1, card1);
 		System.out.println("Hotel payment status: " + p2.getPaymentStatus());
 		System.out.println("Hotel booking status: " + hb1.getStatus());
 		
-		Payment p3 = c2.pay(fb2, card2);
 		System.out.println("\nCustomer 2 pays for flight booking 2");
+		Payment p3 = c2.pay(fb2, card2);
 		System.out.println("Flight payment status: " + p3.getPaymentStatus());
 		System.out.println("Flight booking status: " + fb2.getStatus());
 		
-		Payment p4 = c1.pay(hb2, card2);
+		Payment p4 = c2.pay(hb2, card2);
 		System.out.println("\nCustomer 2 pays for hotel booking 2");
 		System.out.println("Hotel payment status: " + p4.getPaymentStatus());
 		System.out.println("Hotel booking status: " + hb2.getStatus());
 		
 		// test expired card
-		Payment p5 = c2.pay(fb3, card3);
 		System.out.println("\nCustomer 2 pays for flight booking 3 with invalid card");
+		Payment p5 = c2.pay(fb3, card3);
 		System.out.println("Expired card payment status: " + p5.getPaymentStatus());
 		System.out.println("Expired card booking status: " + fb3.getStatus());
 		

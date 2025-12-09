@@ -3,6 +3,11 @@ package org.system.domain;
 import org.system.search.SearchCriteria;
 import org.system.search.HotelSearchCriteria;
 
+/*
+ * Class: HotelListing
+ * The HotelListing class is a child of the abstract Listing class. It contains more
+ * methods and fields specific to hotel listings.
+ */
 public class HotelListing extends Listing {
 	private String location;
 	private double rating;
@@ -12,7 +17,8 @@ public class HotelListing extends Listing {
 		super();
 	}
 	
-	public HotelListing(String aUUID, String aLocation, double aRating, double aPrice, String aName) {
+	public HotelListing(String aUUID, String aLocation, double aRating, 
+			double aPrice, String aName) {
 		super(aUUID, aPrice);
 		this.location = aLocation;
 		this.rating = aRating;
@@ -43,6 +49,11 @@ public class HotelListing extends Listing {
 		this.name = aName;
 	}
 	
+	/*
+	 * matches(criteria) - Determines if current object matches the search criteria
+	 * @param criteria - SearchCriteria object with fields for search/match
+	 * @return true if criteria matches current fields, false if not
+	 */
 	public boolean matches(SearchCriteria criteria) {
 		if (!(criteria instanceof HotelSearchCriteria) || !isAvailable) {
 			return false;
@@ -61,6 +72,8 @@ public class HotelListing extends Listing {
 	}
 	
 	public String toString() {
-		return "Hotel ID: " + UUID + "\n\tName: " + name + "\n\tLocation: " + location + "\n\tRating: " + rating + "\n\tPrice/Night: " + price + "\n\tAvailable (Y/N): " + (isAvailable ? "Y" : "N");
+		return "Hotel ID: " + UUID + "\n\tName: " + name + "\n\tLocation: " + location +
+				"\n\tRating: " + rating + "\n\tPrice/Night: " + price + 
+				"\n\tAvailable (Y/N): " + (isAvailable ? "Y" : "N");
 	}
 }

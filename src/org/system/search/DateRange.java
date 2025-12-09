@@ -2,6 +2,10 @@ package org.system.search;
 
 import java.time.LocalDate;
 
+/*
+ * Class: DateRange
+ * The DateRange class represents a range of LocalDate objects used for searching listings.
+ */
 public class DateRange {
 	private LocalDate start;
 	private LocalDate end;
@@ -27,6 +31,11 @@ public class DateRange {
 		end = aEnd;
 	}
 	
+	/*
+	 * inRange(aDate) - Takes in a date and checks if in current date range
+	 * @param aDate - LocalDate object to check if in range
+	 * @return boolean true if in range
+	 */
 	public boolean inRange(LocalDate aDate) {
 		return (start == null || !aDate.isBefore(start)) && 
 				(end == null || !aDate.isAfter(end));
