@@ -40,6 +40,9 @@ public class BookingSystemGUI extends JFrame {
     private static final String CARD_ADMIN_UPDATE_FLIGHT = "ADMIN_UPDATE_FLIGHT";
     private static final String CARD_ADMIN_HOTELS        = "ADMIN_HOTELS";
 
+    private static final String CARD_ADMIN_ADD_HOTEL     = "ADMIN_ADD_HOTEL";
+    private static final String CARD_ADMIN_REMOVE_FLIGHT = "ADMIN_REMOVE_FLIGHT";
+
     private static final String CARD_CUST_SET_EMAIL      = "CUST_SET_EMAIL";
     private static final String CARD_CUST_SEARCH         = "CUST_SEARCH";
     private static final String CARD_CUST_BOOK           = "CUST_BOOK";
@@ -82,22 +85,27 @@ public class BookingSystemGUI extends JFrame {
 
         //  Admin 
         JMenu adminMenu = new JMenu("Admin");
+
         JMenuItem addFlightItem = new JMenuItem("Add Flight");
         addFlightItem.addActionListener(e -> showCard(CARD_ADMIN_ADD_FLIGHT));
 
         JMenuItem updateFlightItem = new JMenuItem("Update Flight");
         updateFlightItem.addActionListener(e -> showCard(CARD_ADMIN_UPDATE_FLIGHT));
 
+        JMenuItem removeFlightItem = new JMenuItem("Remove Flight");
+        removeFlightItem.addActionListener(e -> showCard(CARD_ADMIN_REMOVE_FLIGHT));
+
+        JMenuItem addHotelItem = new JMenuItem("Add Hotel");               
+        addHotelItem.addActionListener(e -> showCard(CARD_ADMIN_ADD_HOTEL));
+
         JMenuItem hotelsItem = new JMenuItem("Remove / Update Hotels");
         hotelsItem.addActionListener(e -> showCard(CARD_ADMIN_HOTELS));
 
-        JMenuItem printFlightsItem = new JMenuItem("Print All Flights");
-        printFlightsItem.addActionListener(e -> showAllFlights());   // << NEW LINE
-
         adminMenu.add(addFlightItem);
         adminMenu.add(updateFlightItem);
+        adminMenu.add(removeFlightItem);
+        adminMenu.add(addHotelItem);       
         adminMenu.add(hotelsItem);
-        adminMenu.add(printFlightsItem); 
 
         //  Customer 
         JMenu customerMenu = new JMenu("Customer");
@@ -139,6 +147,8 @@ public class BookingSystemGUI extends JFrame {
         // Admin panels
         cardPanel.add(new AdminAddFlightPanel(), CARD_ADMIN_ADD_FLIGHT);
         cardPanel.add(new AdminUpdateFlightPanel(), CARD_ADMIN_UPDATE_FLIGHT);
+        cardPanel.add(new AdminRemoveFlightPanel(), CARD_ADMIN_REMOVE_FLIGHT); 
+        cardPanel.add(new AdminAddHotelPanel(), CARD_ADMIN_ADD_HOTEL);
         cardPanel.add(new AdminHotelsPanel(), CARD_ADMIN_HOTELS);
 
         // Customer panels
@@ -292,7 +302,6 @@ public class BookingSystemGUI extends JFrame {
     }
 
     /*  Admin: Add Flight  */
-
     private class AdminAddFlightPanel extends JPanel {
 
         private JTextField destinationField;
@@ -493,6 +502,201 @@ public class BookingSystemGUI extends JFrame {
         }
     }
 
+    /*  Admin: Remove Flight */ 
+
+    private class AdminRemoveFlightPanel extends JPanel {
+
+        private final JTextField flightIdField;
+        private final JTextArea outputArea;
+
+        AdminRemoveFlightPanel() {
+            setLayout(new BorderLayout());
+
+            JLabel title = new JLabel("Admin: Remove Flight", SwingConstants.CENTER);
+            title.setFont(title.getFont().deriveFont(Font.BOLD, 16f));
+            add(title, BorderLayout.NORTH);
+
+            JPanel form = new JPanel(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(5, 5, 5, 5);
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+
+            gbc.gridx = 0; gbc.gridy = 0;
+            form.add(new JLabel("Flight ID:"), gbc);
+
+            gbc.gridx = 1;
+            flightIdField = new JTextField(20);
+            form.add(flightIdField, gbc);
+
+            gbc.gridx = 0; gbc.gridy++;
+            gbc.gridwidth = 2;
+            JButton removeButton = new JButton("Remove Flight");
+            removeButton.addActionListener(e -> onRemoveFlight());
+            form.add(removeButton, gbc);
+
+            add(form, BorderLayout.CENTER);
+
+            outputArea = new JTextArea(6, 40);
+            outputArea.setEditable(false);
+            add(new JScrollPane(outputArea), BorderLayout.SOUTH);
+        }
+
+        private void onRemoveFlight() {
+            String id = flightIdField.getText().trim();
+            if (id.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Please enter a Flight ID.");
+                return;
+            }
+
+            FlightListing flight = bookingSystem.getFlightByID(id);
+            if (flight == null) {
+                JOptionPane.showMessageDialog(this,
+                        "No flight found with ID " + id,
+                        "Not found", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Check if there is any paid booking for this flight
+            if (hasPaidBookingForFlight(flight)) {
+                JOptionPane.showMessageDialog(this,
+                        "This flight has at least one paid booking and cannot be removed.",
+                        "Cannot remove", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            bookingSystem.getFlights().remove(flight);
+            outputArea.setText("Removed flight:\n\n" + flight.toString());
+
+            if (searchPanel != null) {
+                searchPanel.refreshFromSystem();
+            }
+        }
+
+        private boolean hasPaidBookingForFlight(FlightListing flight) {
+            for (Booking b : bookingSystem.getBookings()) {
+                if (b instanceof FlightBooking) {
+                    FlightBooking fb = (FlightBooking) b;
+                    String listingId = fb.getFlightID();
+                    if (listingId.equals(flight.getUUID())
+                            && b.getStatus() == BookingStatus.PAID) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
+
+    //  Admin: Add Hotel 
+    private class AdminAddHotelPanel extends JPanel {
+
+        private final JTextField locationField;
+        private final JTextField ratingField;
+        private final JTextField priceField;
+        private final JTextField nameField;
+        private final JTextArea outputArea;
+
+        AdminAddHotelPanel() {
+            setLayout(new BorderLayout());
+
+            JLabel title = new JLabel("Admin: Add Hotel", SwingConstants.CENTER);
+            title.setFont(title.getFont().deriveFont(Font.BOLD, 16f));
+            add(title, BorderLayout.NORTH);
+
+            JPanel form = new JPanel(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(5, 5, 5, 5);
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+
+            gbc.gridx = 0; gbc.gridy = 0;
+            form.add(new JLabel("Location:"), gbc);
+            gbc.gridx = 1;
+            locationField = new JTextField(20);
+            form.add(locationField, gbc);
+
+            gbc.gridx = 0; gbc.gridy++;
+            form.add(new JLabel("Rating (0–5):"), gbc);
+            gbc.gridx = 1;
+            ratingField = new JTextField(10);
+            form.add(ratingField, gbc);
+
+            gbc.gridx = 0; gbc.gridy++;
+            form.add(new JLabel("Price per night:"), gbc);
+            gbc.gridx = 1;
+            priceField = new JTextField(10);
+            form.add(priceField, gbc);
+
+            gbc.gridx = 0; gbc.gridy++;
+            form.add(new JLabel("Hotel Name:"), gbc);
+            gbc.gridx = 1;
+            nameField = new JTextField(20);
+            form.add(nameField, gbc);
+
+            gbc.gridx = 0; gbc.gridy++;
+            gbc.gridwidth = 2;
+            JButton addButton = new JButton("Add Hotel");
+            addButton.addActionListener(e -> onAddHotel());
+            form.add(addButton, gbc);
+
+            add(form, BorderLayout.CENTER);
+
+            outputArea = new JTextArea(6, 40);
+            outputArea.setEditable(false);
+            add(new JScrollPane(outputArea), BorderLayout.SOUTH);
+        }
+
+        private void onAddHotel() {
+            String location = locationField.getText().trim();
+            String ratingText = ratingField.getText().trim();
+            String priceText  = priceField.getText().trim();
+            String name       = nameField.getText().trim();
+
+            if (location.isEmpty() || ratingText.isEmpty()
+                    || priceText.isEmpty() || name.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Fill in the fields.");
+                return;
+            }
+
+            double rating;
+            try {
+                rating = Double.parseDouble(ratingText);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this,
+                        "Rating must be a number.",
+                        "Invalid rating", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            double price;
+            try {
+                price = Double.parseDouble(priceText);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this,
+                        "Price must be a number.",
+                        "Invalid price", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String uuid = "HT" + System.currentTimeMillis();
+            HotelListing hotel = new HotelListing(uuid, location, rating, price, name);
+            bookingSystem.getHotels().add(hotel);
+
+            outputArea.setText("Added hotel:\n\n" + hotel.toString());
+
+            // Clear fields
+            locationField.setText("");
+            ratingField.setText("");
+            priceField.setText("");
+            nameField.setText("");
+
+            if (searchPanel != null) {
+                searchPanel.refreshFromSystem();
+            }
+        }
+    }
+
     /*  Admin: Hotels (remove / update)  */
 
     private class AdminHotelsPanel extends JPanel {
@@ -506,7 +710,7 @@ public class BookingSystemGUI extends JFrame {
         AdminHotelsPanel() {
             setLayout(new BorderLayout());
 
-            JLabel title = new JLabel("Admin: Remove / Update Hotels", SwingConstants.CENTER);
+            JLabel title = new JLabel("Admin: Remove/Update Hotels", SwingConstants.CENTER);
             title.setFont(title.getFont().deriveFont(Font.BOLD, 16f));
             add(title, BorderLayout.NORTH);
 
