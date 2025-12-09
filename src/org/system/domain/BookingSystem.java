@@ -123,4 +123,50 @@ public class BookingSystem {
 	public boolean addBooking(Booking aBooking) {
 		return bookings.add(aBooking);
 	}
+
+	// Additional methods to add/remove flights, hotels, bookings can be added similarly
+	// Added by Barack M. A.
+	public boolean addFlight(FlightListing flight) {
+		return flights.add(flight);
+	}
+
+	public boolean removeFlight(FlightListing flight) {
+		return flights.remove(flight);
+	}
+
+	public boolean addHotel(HotelListing hotel) {
+		return hotels.add(hotel);
+	}
+
+	public boolean removeHotel(HotelListing hotel) {
+		return hotels.remove(hotel);
+	}
+
+	public Customer getCustomerByID(String aUUID) {
+		for (Customer customer : customers) {
+			if (customer.getUUID().equals(aUUID)) { 
+				return customer;
+			}
+		}
+		return null;
+	}
+
+	public Customer getCustomerByName(String name) {
+		for (Customer customer : customers) {
+			if (customer.getName().equalsIgnoreCase(name)) {  
+				return customer;
+			}
+		}
+		return null;
+	}
+
+	public Booking getBookingByID(String aUUID) {
+		for (Booking booking : bookings) {
+			if (booking.getUUID().equals(aUUID)) {
+				return booking;
+			}
+		}
+		return null;
+	}
+
 }
