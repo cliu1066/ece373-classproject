@@ -1,6 +1,11 @@
 package org.system.domain;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import org.system.search.SearchCriteria;
 import org.system.search.FlightSearchCriteria;
 
@@ -77,4 +82,25 @@ public class FlightListing extends Listing {
 				destination + "\n\tPrice: " + price + "\n\tAvailable (Y/N): " +
 				(isAvailable ? "Y" : "N"); 
 	}
+	
+	public static ArrayList<FlightListing> parseFlightData(String filename) {
+		File fileIn = new File(filename);
+		Scanner scanner = null;
+		ArrayList<FlightListing> flights = new ArrayList<FlightListing>();
+		
+		try {
+			scanner = new Scanner(fileIn);
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				String[] splitLine = line.split(",");
+				
+			}
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return flights;
+	}
+	
 }

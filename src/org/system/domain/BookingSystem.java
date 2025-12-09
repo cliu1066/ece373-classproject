@@ -2,8 +2,8 @@ package org.system.domain;
 
 import org.system.people.*;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
 /*
  * Class: BookingSystem
@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * system. It contains methods to access the different fields/objects of the system
  * and print them.
  */
-public class BookingSystem {
+public class BookingSystem implements Serializable {
 	private List<FlightListing> flights;
 	private List<HotelListing> hotels;
 	private List<Booking> bookings;
@@ -167,6 +167,51 @@ public class BookingSystem {
 			}
 		}
 		return null;
+	}
+	
+	/*
+	 * loadData() - load existing BookingSystem
+	 * @return BookingSystem loaded
+	 */
+	public static BookingSystem loadData() {
+		FileInputStream fileIn = null;
+		ObjectInputStream objIn = null;
+		BookingSystem bs = null;
+		
+		try {
+			fileIn = new FileInputStream("booking_system.ser");
+			objIn = new ObjectInputStream(fileIn);
+			bs = (BookingSystem)objIn.readObject();
+			objIn.close();
+			fileIn.close();
+		}
+		catch (IOException i) {
+			i.printStackTrace();
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return bs;
+	}
+	
+	/*
+	 * saveData(bs) - Save data from BookingSystem
+	 * @param bs - BookingSystem object to save from
+	 */
+	public static void saveData(BookingSystem bs) {
+		FileOutputStream fileOut = null;
+		ObjectOutputStream objOut = null;
+		
+		try {
+			fileOut = new FileOutputStream("booking_system.ser");
+			objOut = new ObjectOutputStream(fileOut);
+			objOut.writeObject(bs);
+			objOut.close();
+			fileOut.close();
+		}
+		catch (IOException i) {
+			i.printStackTrace();
+		}
 	}
 
 }

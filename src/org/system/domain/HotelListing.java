@@ -1,6 +1,12 @@
 package org.system.domain;
 
 import org.system.search.SearchCriteria;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import org.system.search.HotelSearchCriteria;
 
 /*
@@ -76,4 +82,25 @@ public class HotelListing extends Listing {
 				"\n\tRating: " + rating + "\n\tPrice/Night: " + price + 
 				"\n\tAvailable (Y/N): " + (isAvailable ? "Y" : "N");
 	}
+	
+	public static ArrayList<HotelListing> parseHotelData(String filename) {
+		File fileIn = new File(filename);
+		Scanner scanner = null;
+		ArrayList<HotelListing> hotels = new ArrayList<HotelListing>();
+		
+		try {
+			scanner = new Scanner(fileIn);
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				String[] splitLine = line.split(",");
+				
+			}
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return hotels;
+	}
+	
 }

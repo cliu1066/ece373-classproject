@@ -27,7 +27,9 @@ import org.system.people.*;
  */
 public class BookingSystemGUI extends JFrame {
 
-    private BookingSystem bookingSystem;
+	private static final long serialVersionUID = 1L;
+
+	private BookingSystem bookingSystem;
 
     private CardLayout cardLayout;
     private JPanel cardPanel;
