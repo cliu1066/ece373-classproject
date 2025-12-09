@@ -15,6 +15,7 @@ import org.system.search.FlightSearchCriteria;
  * methods and fields specific to flight listings.
  */
 public class FlightListing extends Listing {
+	private String departure;
 	private String destination;
 	private LocalDate date;
 	private String airline;
@@ -23,12 +24,21 @@ public class FlightListing extends Listing {
 		super();
 	}
 	
-	public FlightListing(String aUUID, String aDestination, LocalDate aDate, double aPrice,
+	public FlightListing(String aUUID, String aDeparture, String aDestination, LocalDate aDate, double aPrice,
 						String aAirline) {
 		super(aUUID, aPrice);
+		this.departure = aDeparture;
 		this.destination = aDestination;
 		this.date = aDate;
 		this.airline = aAirline;
+	}
+	
+	public String getDeparture() {
+		return departure;
+	}
+	
+	public void setDeparture(String aDeparture) {
+		this.departure = aDeparture;
 	}
 	
 	public String getDestination() {
@@ -65,6 +75,9 @@ public class FlightListing extends Listing {
 			return false;
 		}
 		FlightSearchCriteria fsc = (FlightSearchCriteria)criteria;
+		if (fsc.getDeparture()  != null && !departure.equals(fsc.getDeparture())) {
+			return false;
+		}
 		if (fsc.getDestination() != null && !destination.equals(fsc.getDestination())) {
 			return false;
 		}
@@ -78,8 +91,8 @@ public class FlightListing extends Listing {
 	}
 	
 	public String toString() {
-		return "Flight ID: " + UUID + "\n\tAirline: " + airline + "\n\tDestination: " +
-				destination + "\n\tPrice: " + price + "\n\tAvailable (Y/N): " +
+		return "Flight ID: " + UUID + "\n\tAirline: " + airline + "\n\tDeparture: " + departure +
+				"\n\tDestination: " + destination + "\n\tPrice: " + price + "\n\tAvailable (Y/N): " +
 				(isAvailable ? "Y" : "N"); 
 	}
 	

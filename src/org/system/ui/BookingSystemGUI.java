@@ -356,6 +356,7 @@ public class BookingSystemGUI extends JFrame {
         }
 
         private void onAddFlight() {
+        	String departure  = departureField.getText().trim();
             String destination = destinationField.getText().trim();
             String dateText   = dateField.getText().trim();
             String priceText  = priceField.getText().trim();

@@ -8,11 +8,20 @@ import java.time.LocalDate;
  * flight searching fields (notably destination and date).
  */
 public class FlightSearchCriteria extends SearchCriteria {
+	private String departure;
 	private String destination;
 	private LocalDate date;
 	
 	public FlightSearchCriteria() {
 		super();
+	}
+	
+	public String getDeparture() {
+		return departure;
+	}
+	
+	public void setDeparture(String aDeparture) {
+		departure = aDeparture;
 	}
 	
 	public String getDestination() {
@@ -33,7 +42,8 @@ public class FlightSearchCriteria extends SearchCriteria {
 	
 	public String toString() {
 		return "Search Criteria:\n\t" + 
-				"Destination: " + (destination != null ? destination : "N/A") + 
+				"Destination: " + (departure != null ? departure : "N/A") + " " +
+				(destination != null ? destination : "N/A") + 
 				" Date: " + (date != null ? date : "N/A") + " Price: " + priceRange;
 	}
 }
