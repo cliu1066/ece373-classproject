@@ -27,9 +27,9 @@ import org.system.people.*;
  */
 public class BookingSystemGUI extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private BookingSystem bookingSystem;
+    private BookingSystem bookingSystem;
 
     private CardLayout cardLayout;
     private JPanel cardPanel;
@@ -306,6 +306,7 @@ public class BookingSystemGUI extends JFrame {
     /*  Admin: Add Flight  */
     private class AdminAddFlightPanel extends JPanel {
 
+        private JTextField departureField;
         private JTextField destinationField;
         private JTextField dateField;   // yyyy-MM-dd
         private JTextField priceField;
@@ -322,6 +323,13 @@ public class BookingSystemGUI extends JFrame {
 
             gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
             add(title, gbc);
+
+            gbc.gridwidth = 1;
+            gbc.gridy++;
+            add(new JLabel("Departure:"), gbc);
+            gbc.gridx = 1;
+            departureField = new JTextField(15);
+            add(departureField, gbc);   
 
             gbc.gridwidth = 1;
             gbc.gridy++;
@@ -356,13 +364,13 @@ public class BookingSystemGUI extends JFrame {
         }
 
         private void onAddFlight() {
-        	String departure  = departureField.getText().trim();
+            String departure  = departureField.getText().trim();
             String destination = destinationField.getText().trim();
             String dateText   = dateField.getText().trim();
             String priceText  = priceField.getText().trim();
             String airline    = airlineField.getText().trim();
-
-            if (destination.isEmpty() || dateText.isEmpty()
+            
+            if (departure.isEmpty() || destination.isEmpty() || dateText.isEmpty()
                     || priceText.isEmpty() || airline.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please fill all fields.");
                 return;
@@ -389,12 +397,14 @@ public class BookingSystemGUI extends JFrame {
             }
 
             String uuid = "FL" + System.currentTimeMillis();
-            FlightListing flight = new FlightListing(uuid, destination, date, price, airline);
+            FlightListing flight = new FlightListing(uuid, departure, destination, date, price, airline);
             bookingSystem.getFlights().add(flight);
 
             JOptionPane.showMessageDialog(this,
                     "Flight added.\n\n" + flight.toString());
-
+                    
+            // Clear fields
+            departureField.setText("");
             destinationField.setText("");
             dateField.setText("");
             priceField.setText("");
@@ -1355,3 +1365,6 @@ public class BookingSystemGUI extends JFrame {
         });
     }
 }
+
+
+// 
