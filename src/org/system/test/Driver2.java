@@ -68,59 +68,63 @@ public class Driver2 {
 		HotelListing hl4 = new HotelListing();
 		
 		// set flight attributes
-		fl1.setUUID("FL001");
-		fl1.setDestination("Phoenix, USA");
+		fl1.setUUID("FL01");
+		fl1.setDeparture("EWR");
+		fl1.setDestination("PHX");
 		fl1.setDate(LocalDate.now().plusDays(5));
 		fl1.setPrice(500);
 		fl1.setAirline("Delta Airlines");
 		fl1.setAvailable(true);
 		
-		fl2.setUUID("FL002");
-		fl2.setDestination("Seoul, South Korea");
+		fl2.setUUID("FL02");
+		fl2.setDeparture("LHR");
+		fl2.setDestination("ICN");
 		fl2.setDate(LocalDate.now().plusDays(30));
 		fl2.setPrice(1000);
 		fl2.setAirline("Korean Air");
 		fl2.setAvailable(true);
 		
-		fl3.setUUID("FL003");
-		fl3.setDestination("Los Angeles, USA");
+		fl3.setUUID("FL03");
+		fl3.setDeparture("MSP");
+		fl3.setDestination("LAX");
 		fl3.setDate(LocalDate.now().plusDays(10));
 		fl3.setPrice(100);
 		fl3.setAirline("American Airlines");
 		fl3.setAvailable(true);
 		
-		fl4.setUUID("FL004");
-		fl4.setDestination("Tokyo, Japan");
+		fl4.setUUID("FL04");
+		fl4.setDeparture("LAX");
+		fl4.setDestination("HND");
 		fl4.setDate(LocalDate.now().plusDays(20));
 		fl4.setPrice(1200);
 		fl4.setAirline("Japan Airlines");
 		fl4.setAvailable(true);
 		
 		// set hotel attributes
-		hl1.setUUID("HL001");
+		hl1.setUUID("HL01");
 		hl1.setName("Sanctuary Camelback Mountain");
-		hl1.setLocation("Paradise Valley, AZ, USA");
+		hl1.setLocation("Paradise Valley");
 		hl1.setPrice(540);
 		hl1.setRating(4.7);
 		hl1.setAvailable(true);
 		
-		hl2.setUUID("HL002");
+		hl2.setUUID("HL02");
 		hl2.setName("The Shilla Seoul");
-		hl2.setLocation("Seoul, South Korea");
+		hl2.setLocation("Seoul");
 		hl2.setPrice(270);
 		hl2.setRating(4.6);
 		hl2.setAvailable(true);
 		
-		hl3.setUUID("HL003");
+		hl3.setUUID("HL03");
 		hl3.setName("The Beverly Hills Hotel");
-		hl3.setLocation("Beverly Hills, CA, USA");
+		hl3.setLocation("Beverly Hills");
 		hl3.setPrice(1700);
 		hl3.setRating(4.7);
 		hl3.setAvailable(true);
 		
-		hl4.setUUID("HL004");
+		hl4.setUUID("HL04");
 		hl4.setName("Hoshinoya Tokyo");
-		hl4.setLocation("Tokyo, Japan");
+		hl4.setLocation("Tokyo");
 		hl4.setPrice(1500);
 		hl4.setRating(4.5);
 		hl4.setAvailable(true);
