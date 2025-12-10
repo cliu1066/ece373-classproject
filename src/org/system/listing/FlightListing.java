@@ -93,8 +93,8 @@ public class FlightListing extends Listing implements Serializable {
 	}
 	
 	public String toString() {
-		return "Flight ID: " + UUID + " Airline: " + airline + " Departure: " + departure +
-				" Destination: " + destination + " Price: " + price + " Available (Y/N): " +
+		return "Flight ID: " + UUID + "\n\tAirline: " + airline + "\n\tDeparture: " + departure +
+				"\n\tDestination: " + destination + "\n\tPrice: " + price + "\n\tAvailable (Y/N): " +
 				(isAvailable ? "Y" : "N"); 
 	}
 	
@@ -106,13 +106,13 @@ public class FlightListing extends Listing implements Serializable {
 		try {
 			scanner = new Scanner(fileIn);
 			scanner.nextLine();
-			int i = 5;
+			int i = 0;
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 				String[] splitLine = line.split(",");
 				DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 				
-				String uuid = "FL" + ((i < 10) ? "0" : "0") + String.valueOf(i);
+				String uuid = "FL" + ((i < 10) ? "00" : "0") + String.valueOf(i);
 				String departure = splitLine[0].trim();
 				String destination = splitLine[1].trim();
 				LocalDate date = LocalDate.parse(splitLine[3].trim(), fmt);

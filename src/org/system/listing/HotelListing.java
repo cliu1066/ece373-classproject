@@ -79,9 +79,9 @@ public class HotelListing extends Listing implements Serializable {
 	}
 	
 	public String toString() {
-		return "Hotel ID: " + UUID + " Name: " + name + " Location: " + location +
-				" Rating: " + rating + " Price/Night: " + price + 
-				" Available (Y/N): " + (isAvailable ? "Y" : "N");
+		return "Hotel ID: " + UUID + "\n\tName: " + name + "\n\tLocation: " + location +
+				"\n\tRating: " + rating + "\n\tPrice/Night: " + price + 
+				"\n\tAvailable (Y/N): " + (isAvailable ? "Y" : "N");
 	}
 	
 	public static ArrayList<HotelListing> parseHotelData(String filename) {
@@ -92,12 +92,12 @@ public class HotelListing extends Listing implements Serializable {
 		try {
 			scanner = new Scanner(fileIn);
 			scanner.nextLine();
-			int i = 5;
+			int i = 0;
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 				String[] splitLine = line.split(",");
 				
-				String uuid = "HL" + ((i < 10) ? "0" : "0") + String.valueOf(i);
+				String uuid = "HL" + ((i < 10) ? "00" : "0") + String.valueOf(i);
 				String location = splitLine[0];
 				String name = splitLine[1];
 				double rating = Double.valueOf(splitLine[2]);
