@@ -220,10 +220,11 @@ public class BookingSystemGUI extends JFrame {
 
     /** Find or create a customer based on name + email. */
     private Customer findOrCreateCustomer(String name, String email) {
-        Customer existing = findCustomerByEmail(email);
+        Customer existing = bookingSystem.getCustomerByName(name);
         if (existing != null) return existing;
-
-        String uuid = "C" + System.currentTimeMillis();
+        
+        int curr = bookingSystem.getCustomers().size();
+        String uuid = "C" + (curr + 1 < 10 ? "00" : "0") + String.valueOf(curr + 1);
         Customer created = new Customer(uuid, name, email);
         bookingSystem.addCustomer(created);
         return created;
