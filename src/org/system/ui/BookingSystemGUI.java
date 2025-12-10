@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.ArrayList;
 import javax.swing.*;
 
 import org.system.booking.*;
@@ -105,12 +106,17 @@ public class BookingSystemGUI extends JFrame {
 
         JMenuItem hotelsItem = new JMenuItem("Remove/Update Hotels");
         hotelsItem.addActionListener(e -> showCard(CARD_ADMIN_HOTELS));
+        
+        JMenuItem printItem = new JMenuItem("Print All Data");
+        printItem.addActionListener(e -> showPrintWindow());
 
         adminMenu.add(addFlightItem);
         adminMenu.add(updateFlightItem);
         adminMenu.add(removeFlightItem);
         adminMenu.add(addHotelItem);       
         adminMenu.add(hotelsItem);
+        adminMenu.addSeparator();
+        adminMenu.add(printItem);
 
         //  Customer 
         JMenu customerMenu = new JMenu("Customer");
@@ -126,12 +132,17 @@ public class BookingSystemGUI extends JFrame {
         historyItem.addActionListener(e -> showCard(CARD_CUST_HISTORY));
         JMenuItem cancelItem = new JMenuItem("Cancel Booking");
         cancelItem.addActionListener(e -> showCard(CARD_CUST_CANCEL));
+        JMenuItem printFlightsHotelsItem = new JMenuItem("Print Flights & Hotels");
+        printFlightsHotelsItem.addActionListener(e -> showCustomerPrintWindow());
+
         customerMenu.add(setEmailItem);
         customerMenu.add(searchItem);
         customerMenu.add(bookItem);
         customerMenu.add(payItem);
         customerMenu.add(historyItem);
         customerMenu.add(cancelItem);
+        customerMenu.addSeparator();
+        customerMenu.add(printFlightsHotelsItem);
 
         menuBar.add(fileMenu);
         menuBar.add(adminMenu);
@@ -311,6 +322,211 @@ public class BookingSystemGUI extends JFrame {
 	            JOptionPane.INFORMATION_MESSAGE
 	    		);
 	}
+	
+	private void showPrintWindow() {
+	    JFrame printFrame = new JFrame("Admin: Print All Data");
+	    printFrame.setSize(900, 700);
+	    printFrame.setLocationRelativeTo(this);
+	    printFrame.setLayout(new BorderLayout());
+
+	    JTextArea printArea = new JTextArea();
+	    printArea.setEditable(false);
+	    printArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+	    
+	    StringBuilder sb = new StringBuilder();
+	    
+	    // Flights Section
+	    sb.append("========================================\n");
+	    sb.append("           ALL FLIGHTS\n");
+	    sb.append("========================================\n\n");
+	    
+	    List<FlightListing> flights = bookingSystem.getFlights();
+	    if (flights.isEmpty()) {
+	        sb.append("No flights in the system.\n\n");
+	    } else {
+	        for (FlightListing f : flights) {
+	            sb.append(f.toString()).append("\n");
+	        }
+	        sb.append("\nTotal Flights: ").append(flights.size()).append("\n\n");
+	    }
+	    
+	    // Hotels Section
+	    sb.append("========================================\n");
+	    sb.append("           ALL HOTELS\n");
+	    sb.append("========================================\n\n");
+	    
+	    List<HotelListing> hotels = bookingSystem.getHotels();
+	    if (hotels.isEmpty()) {
+	        sb.append("No hotels in the system.\n\n");
+	    } else {
+	        for (HotelListing h : hotels) {
+	            sb.append(h.toString()).append("\n");
+	        }
+	        sb.append("\nTotal Hotels: ").append(hotels.size()).append("\n\n");
+	    }
+	    
+	    // Customers Section
+	    sb.append("========================================\n");
+	    sb.append("           ALL CUSTOMERS\n");
+	    sb.append("========================================\n\n");
+	    
+	    List<Customer> customers = bookingSystem.getCustomers();
+	    if (customers.isEmpty()) {
+	        sb.append("No customers in the system.\n\n");
+	    } else {
+	        for (Customer c : customers) {
+	            sb.append("Customer ID: ").append(c.getUUID()).append("\n");
+	            sb.append("  Name: ").append(c.getName()).append("\n");
+	            sb.append("  Email: ").append(c.getEmail()).append("\n");
+	            sb.append("  Number of Bookings: ").append(c.getBookingHistory().size()).append("\n\n");
+	        }
+	        sb.append("Total Customers: ").append(customers.size()).append("\n\n");
+	    }
+	    
+	    // Bookings Section
+	    sb.append("========================================\n");
+	    sb.append("           ALL BOOKINGS\n");
+	    sb.append("========================================\n\n");
+	    
+	    List<Booking> bookings = bookingSystem.getBookings();
+	    if (bookings.isEmpty()) {
+	        sb.append("No bookings in the system.\n\n");
+	    } else {
+	        for (Booking b : bookings) {
+	            sb.append("Booking ID: ").append(b.getUUID()).append("\n");
+	            sb.append("  Status: ").append(b.getStatus()).append("\n");
+	            sb.append("  Total: $").append(String.format("%.2f", b.getTotal())).append("\n");
+	            sb.append("  Customer: ").append(b.getCustomer() != null ? b.getCustomer().getEmail() : "N/A").append("\n");
+	            sb.append("  Created: ").append(b.getCreatedDateTime()).append("\n");
+	            
+	            if (b instanceof FlightBooking) {
+	                FlightBooking fb = (FlightBooking) b;
+	                sb.append("  Type: Flight Booking\n");
+	                sb.append("  Flight ID: ").append(fb.getFlightID()).append("\n");
+	            } else if (b instanceof HotelBooking) {
+	                HotelBooking hb = (HotelBooking) b;
+	                sb.append("  Type: Hotel Booking\n");
+	                sb.append("  Hotel ID: ").append(hb.getHotelID()).append("\n");
+	                sb.append("  Nights: ").append(hb.getNights()).append("\n");
+	            }
+	            sb.append("\n");
+	        }
+	        sb.append("Total Bookings: ").append(bookings.size()).append("\n");
+	    }
+	    
+	    printArea.setText(sb.toString());
+	    printArea.setCaretPosition(0); // Scroll to top
+	    
+	    JScrollPane scrollPane = new JScrollPane(printArea);
+	    printFrame.add(scrollPane, BorderLayout.CENTER);
+	    
+	    // Add a close button at the bottom
+	    JPanel buttonPanel = new JPanel();
+	    JButton closeButton = new JButton("Close");
+	    closeButton.addActionListener(e -> printFrame.dispose());
+	    buttonPanel.add(closeButton);
+	    printFrame.add(buttonPanel, BorderLayout.SOUTH);
+	    
+	    printFrame.setVisible(true);
+	}
+	
+	private void showCustomerPrintWindow() {
+	    JFrame printFrame = new JFrame("Customer: Print Flights & Hotels");
+	    printFrame.setSize(1000, 700);
+	    printFrame.setLocationRelativeTo(this);
+	    printFrame.setLayout(new BorderLayout());
+
+	    JLabel title = new JLabel("All Available Flights & Hotels", SwingConstants.CENTER);
+	    title.setFont(title.getFont().deriveFont(Font.BOLD, 16f));
+	    title.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+	    printFrame.add(title, BorderLayout.NORTH);
+
+	    JPanel tablesPanel = new JPanel(new GridLayout(2, 1, 0, 10));
+	    tablesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+	    // Flights Table
+	    List<FlightListing> flights = bookingSystem.getFlights();
+	    List<Object[]> flightRows = new ArrayList<>();
+	    
+	    for (FlightListing f : flights) {
+	        flightRows.add(new Object[]{
+	            f.getUUID(),
+	            f.getAirline(),
+	            f.getDeparture(),
+	            f.getDestination(),
+	            f.getDate().toString(),
+	            String.format("$%.2f", f.getPrice()),
+	            f.isAvailable() ? "Y" : "N"
+	        });
+	    }
+	    
+	    String[] flightColumns = {"ID", "Airline", "Departure", "Destination", "Date", "Price", "Available"};
+	    JTable flightsTable = new JTable(new javax.swing.table.DefaultTableModel(
+	        flightRows.toArray(new Object[0][0]),
+	        flightColumns
+	    ) {
+	        /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    });
+	    flightsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    JScrollPane flightsScrollPane = new JScrollPane(flightsTable);
+	    flightsScrollPane.setBorder(BorderFactory.createTitledBorder("All Flights (" + flights.size() + " total)"));
+
+	    // Hotels Table
+	    List<HotelListing> hotels = bookingSystem.getHotels();
+	    List<Object[]> hotelRows = new ArrayList<>();
+	    
+	    for (HotelListing h : hotels) {
+	        hotelRows.add(new Object[]{
+	            h.getUUID(),
+	            h.getName(),
+	            h.getLocation(),
+	            String.format("%.1f", h.getRating()),
+	            String.format("$%.2f", h.getPrice()),
+	            h.isAvailable() ? "Y" : "N"
+	        });
+	    }
+	    
+	    String[] hotelColumns = {"ID", "Name", "Location", "Rating", "Price/Night", "Available"};
+	    JTable hotelsTable = new JTable(new javax.swing.table.DefaultTableModel(
+	        hotelRows.toArray(new Object[0][0]),
+	        hotelColumns
+	    ) {
+	        /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    });
+	    hotelsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    JScrollPane hotelsScrollPane = new JScrollPane(hotelsTable);
+	    hotelsScrollPane.setBorder(BorderFactory.createTitledBorder("All Hotels (" + hotels.size() + " total)"));
+
+	    tablesPanel.add(flightsScrollPane);
+	    tablesPanel.add(hotelsScrollPane);
+
+	    printFrame.add(tablesPanel, BorderLayout.CENTER);
+
+	    // Add a close button at the bottom
+	    JPanel buttonPanel = new JPanel();
+	    JButton closeButton = new JButton("Close");
+	    closeButton.addActionListener(e -> printFrame.dispose());
+	    buttonPanel.add(closeButton);
+	    printFrame.add(buttonPanel, BorderLayout.SOUTH);
+
+	    printFrame.setVisible(true);
+	}
 
     /*  WELCOME PANEL  */
 
@@ -396,6 +612,14 @@ public class BookingSystemGUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "Please fill all fields.");
                 return;
             }
+            
+            //departure and destination cannot be the same
+            if (departure.equalsIgnoreCase(destination)) {
+                JOptionPane.showMessageDialog(this,
+                        "Departure and destination cannot be the same.",
+                        "Invalid Flight", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             LocalDate date;
             try {
@@ -404,6 +628,14 @@ public class BookingSystemGUI extends JFrame {
                 JOptionPane.showMessageDialog(this,
                         "Date must be in format yyyy-MM-dd.",
                         "Invalid date", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            //Flight date must be in the future
+            if (date.isBefore(LocalDate.now()) || date.isEqual(LocalDate.now())) {
+                JOptionPane.showMessageDialog(this,
+                        "Flight date must be in the future.",
+                        "Invalid Date", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -417,7 +649,8 @@ public class BookingSystemGUI extends JFrame {
                 return;
             }
 
-            String uuid = "FL" + System.currentTimeMillis();
+            int nextFlightNum = bookingSystem.getFlights().size() + 1;
+            String uuid = "FL" + "0" + nextFlightNum;
             FlightListing flight = new FlightListing(uuid, departure, destination, date, price, airline);
             bookingSystem.getFlights().add(flight);
 
@@ -713,7 +946,8 @@ public class BookingSystemGUI extends JFrame {
                 return;
             }
 
-            String uuid = "HT" + System.currentTimeMillis();
+            int nextHotelNum = bookingSystem.getHotels().size() + 1;
+            String uuid = "HL" + "0" + nextHotelNum;
             HotelListing hotel = new HotelListing(uuid, location, rating, price, name);
             bookingSystem.getHotels().add(hotel);
 
@@ -739,6 +973,7 @@ public class BookingSystemGUI extends JFrame {
         private JTextField newNameField;
         private JTextField newLocationField;
         private JTextField newRatingField;
+        private JTextField newPriceField;
         private JTextArea outputArea;
 
         AdminHotelsPanel() {
@@ -776,6 +1011,12 @@ public class BookingSystemGUI extends JFrame {
             gbc.gridx = 1;
             newRatingField = new JTextField(20);
             form.add(newRatingField, gbc);
+            
+            gbc.gridx = 0; gbc.gridy++;
+            form.add(new JLabel("New Price (blank = unchanged):"), gbc);
+            gbc.gridx = 1;
+            newPriceField = new JTextField(20);
+            form.add(newPriceField, gbc);
 
             gbc.gridx = 0; gbc.gridy++;
             gbc.gridwidth = 1;
@@ -819,6 +1060,7 @@ public class BookingSystemGUI extends JFrame {
             String newName = newNameField.getText().trim();
             String newLoc = newLocationField.getText().trim();
             String newRatingText = newRatingField.getText().trim();
+            String newPriceText = newPriceField.getText().trim();
 
             if (!newName.isEmpty()) hotel.setName(newName);
             if (!newLoc.isEmpty()) hotel.setLocation(newLoc);
@@ -829,6 +1071,18 @@ public class BookingSystemGUI extends JFrame {
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(this,
                             "Rating must be numeric.", "Invalid rating",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            
+            if (!newPriceText.isEmpty()) {
+                try {
+                    double p = Double.parseDouble(newPriceText);
+                    hotel.setPrice(p);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this,
+                            "Price must be numeric.", "Invalid price",
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -917,11 +1171,12 @@ public class BookingSystemGUI extends JFrame {
 
     /*  Customer: Search Flights & Hotels  */
 
+    /*  Customer: Search Flights & Hotels  */
+
     private class SearchPanel extends JPanel {
 
-        private DefaultListModel<String> flightsModel = new DefaultListModel<>();
-        private DefaultListModel<String> hotelsModel  = new DefaultListModel<>();
-
+        private JTable flightsTable;
+        private JTable hotelsTable;
         private JTextField flightDestFilterField;
         private JTextField hotelLocFilterField;
 
@@ -944,15 +1199,28 @@ public class BookingSystemGUI extends JFrame {
             filters.add(applyButton);
             add(filters, BorderLayout.SOUTH);
 
-            JPanel listsPanel = new JPanel(new GridLayout(1, 2));
+            JPanel tablesPanel = new JPanel(new GridLayout(1, 2, 10, 0));
 
-            JList<String> flightsList = new JList<>(flightsModel);
-            JList<String> hotelsList  = new JList<>(hotelsModel);
+            // Flights Table
+            String[] flightColumns = {"ID", "Airline", "Departure", "Destination", "Date", "Price", "Available"};
+            flightsTable = new JTable(new Object[0][0], flightColumns);
+            flightsTable.setEnabled(false);
+            flightsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            JScrollPane flightsScrollPane = new JScrollPane(flightsTable);
+            flightsScrollPane.setBorder(BorderFactory.createTitledBorder("Flights"));
 
-            listsPanel.add(new JScrollPane(flightsList));
-            listsPanel.add(new JScrollPane(hotelsList));
+            // Hotels Table
+            String[] hotelColumns = {"ID", "Name", "Location", "Rating", "Price/Night", "Available"};
+            hotelsTable = new JTable(new Object[0][0], hotelColumns);
+            hotelsTable.setEnabled(false);
+            hotelsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            JScrollPane hotelsScrollPane = new JScrollPane(hotelsTable);
+            hotelsScrollPane.setBorder(BorderFactory.createTitledBorder("Hotels"));
 
-            add(listsPanel, BorderLayout.CENTER);
+            tablesPanel.add(flightsScrollPane);
+            tablesPanel.add(hotelsScrollPane);
+
+            add(tablesPanel, BorderLayout.CENTER);
 
             refreshFromSystem();
         }
@@ -961,21 +1229,72 @@ public class BookingSystemGUI extends JFrame {
             String fFilter = flightDestFilterField.getText().trim();
             String hFilter = hotelLocFilterField.getText().trim();
 
-            flightsModel.clear();
-            for (FlightListing f : bookingSystem.getFlights()) {
-                if (fFilter.isEmpty() ||
-                        f.getDestination().equalsIgnoreCase(fFilter)) {
-                    flightsModel.addElement(f.toString());
+            // Update Flights Table
+            List<FlightListing> flights = bookingSystem.getFlights();
+            List<Object[]> flightRows = new ArrayList<>();
+            
+            for (FlightListing f : flights) {
+                if (fFilter.isEmpty() || f.getDestination().equalsIgnoreCase(fFilter)) {
+                    flightRows.add(new Object[]{
+                        f.getUUID(),
+                        f.getAirline(),
+                        f.getDeparture(),
+                        f.getDestination(),
+                        f.getDate().toString(),
+                        String.format("$%.2f", f.getPrice()),
+                        f.isAvailable() ? "Y" : "N"
+                    });
                 }
             }
+            
+            String[] flightColumns = {"ID", "Airline", "Departure", "Destination", "Date", "Price", "Available"};
+            flightsTable.setModel(new javax.swing.table.DefaultTableModel(
+                flightRows.toArray(new Object[0][0]),
+                flightColumns
+            ) {
+                /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
-            hotelsModel.clear();
-            for (HotelListing h : bookingSystem.getHotels()) {
-                if (hFilter.isEmpty() ||
-                        h.getLocation().equalsIgnoreCase(hFilter)) {
-                    hotelsModel.addElement(h.toString());
+				@Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            });
+
+            // Update Hotels Table
+            List<HotelListing> hotels = bookingSystem.getHotels();
+            List<Object[]> hotelRows = new ArrayList<>();
+            
+            for (HotelListing h : hotels) {
+                if (hFilter.isEmpty() || h.getLocation().equalsIgnoreCase(hFilter)) {
+                    hotelRows.add(new Object[]{
+                        h.getUUID(),
+                        h.getName(),
+                        h.getLocation(),
+                        String.format("%.1f", h.getRating()),
+                        String.format("$%.2f", h.getPrice()),
+                        h.isAvailable() ? "Y" : "N"
+                    });
                 }
             }
+            
+            String[] hotelColumns = {"ID", "Name", "Location", "Rating", "Price/Night", "Available"};
+            hotelsTable.setModel(new javax.swing.table.DefaultTableModel(
+                hotelRows.toArray(new Object[0][0]),
+                hotelColumns
+            ) {
+                /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            });
         }
     }
 
@@ -1219,6 +1538,18 @@ public class BookingSystemGUI extends JFrame {
                 JOptionPane.showMessageDialog(this,
                         "No booking found with ID " + bookingId,
                         "Not found", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            //Prevent payment for already paid bookings
+            if (booking.getStatus() == BookingStatus.PAID) {
+                JOptionPane.showMessageDialog(this,
+                        "This booking has already been paid for.\nBooking ID: " + bookingId,
+                        "Already Paid", JOptionPane.WARNING_MESSAGE);
+                outputArea.append("Payment attempt REJECTED for booking " + booking.getUUID() +
+                        "\nReason: Booking already paid" +
+                        "\nTime: " + LocalDateTime.now() +
+                        "\n\n");
                 return;
             }
 
