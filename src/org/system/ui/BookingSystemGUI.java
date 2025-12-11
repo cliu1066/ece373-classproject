@@ -9,6 +9,8 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.imageio.ImageIO;
+import java.awt.Image;
 
 import org.system.booking.*;
 import org.system.listing.FlightListing;
@@ -56,6 +58,13 @@ public class BookingSystemGUI extends JFrame {
     private static final String CARD_CUST_PAY            = "CUST_PAY";
     private static final String CARD_CUST_HISTORY        = "CUST_HISTORY";
     private static final String CARD_CUST_CANCEL         = "CUST_CANCEL";
+    
+    private static final Color PRIMARY_BLUE = new Color(52, 152, 219);
+    private static final Color SECONDARY_GREEN = new Color(46, 204, 113);
+    private static final Color ACCENT_ORANGE = new Color(230, 126, 34);
+    private static final Color DANGER_RED = new Color(231, 76, 60);
+    private static final Color LIGHT_BG = new Color(236, 240, 241);
+    private static final Color DARK_TEXT = new Color(52, 73, 94);
 
     public BookingSystemGUI(BookingSystem system) {
         super("ECE373 Travel Booking System");
@@ -462,7 +471,7 @@ public class BookingSystemGUI extends JFrame {
 
     /*  WELCOME PANEL  */
 
-    private class WelcomePanel extends JPanel {
+    /*private class WelcomePanel extends JPanel {
         WelcomePanel() {
             setLayout(new BorderLayout());
             JLabel label = new JLabel(
@@ -470,6 +479,56 @@ public class BookingSystemGUI extends JFrame {
                     SwingConstants.CENTER);
             label.setFont(label.getFont().deriveFont(Font.BOLD, 20f));
             add(label, BorderLayout.CENTER);
+        }
+    }*/
+	
+    private class WelcomePanel extends JPanel {
+        private Image backgroundImage;
+        
+        WelcomePanel() {
+            setLayout(new BorderLayout());
+            
+            String imagePath = "planebg.png";
+            
+            try {
+                backgroundImage = ImageIO.read(new File(imagePath));
+            } catch (Exception e) {
+                setBackground(PRIMARY_BLUE);
+            }
+            
+            // Create text panel (transparent to show background)
+            JPanel center = new JPanel();
+            center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
+            center.setOpaque(false);
+            center.setBorder(BorderFactory.createEmptyBorder(200, 40, 200, 40));
+            
+            // Title
+            JLabel title = new JLabel("Welcome to ECE373 Travel Booking");
+            title.setFont(new Font("Segoe UI", Font.BOLD, 48));
+            title.setForeground(Color.WHITE);
+            title.setAlignmentX(Component.CENTER_ALIGNMENT);
+            
+            // Subtitle
+            JLabel subtitle = new JLabel("Your Journey Starts Here");
+            subtitle.setFont(new Font("Segoe UI", Font.ITALIC, 24));
+            subtitle.setForeground(Color.WHITE);
+            subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+            
+            center.add(title);
+            center.add(Box.createRigidArea(new Dimension(0, 20)));
+            center.add(subtitle);
+            
+            add(center, BorderLayout.CENTER);
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            
+            // Draw background image if loaded
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
         }
     }
 
