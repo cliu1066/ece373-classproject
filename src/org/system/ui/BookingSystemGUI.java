@@ -639,8 +639,23 @@ public class BookingSystemGUI extends JFrame {
                         "Invalid price", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            int nextFlightNum = bookingSystem.getFlights().size() + 1;
+            
+            // Generate sequential Flight ID based on highest existing ID
+            int maxFlightNum = 0;
+            for (FlightListing existingFlight : bookingSystem.getFlights()) {
+                String existingId = existingFlight.getUUID();
+                if (existingId.startsWith("FL")) {
+                    try {
+                        int num = Integer.parseInt(existingId.substring(2));
+                        if (num > maxFlightNum) {
+                            maxFlightNum = num;
+                        }
+                    } catch (NumberFormatException e) {
+                        // Skip non-numeric IDs
+                    }
+                }
+            }
+            int nextFlightNum = maxFlightNum + 1;
             String uuid = "FL" + "0" + nextFlightNum;
             FlightListing flight = new FlightListing(uuid, departure, destination, date, price, airline);
             bookingSystem.getFlights().add(flight);
@@ -936,8 +951,23 @@ public class BookingSystemGUI extends JFrame {
                         "Invalid price", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            int nextHotelNum = bookingSystem.getHotels().size() + 1;
+            
+            // Generate sequential Hotel ID based on highest existing ID
+            int maxHotelNum = 0;
+            for (HotelListing existingHotel : bookingSystem.getHotels()) {
+                String existingId = existingHotel.getUUID();
+                if (existingId.startsWith("HL")) {
+                    try {
+                        int num = Integer.parseInt(existingId.substring(2));
+                        if (num > maxHotelNum) {
+                            maxHotelNum = num;
+                        }
+                    } catch (NumberFormatException e) {
+                        // Skip non-numeric IDs
+                    }
+                }
+            }
+            int nextHotelNum = maxHotelNum + 1;
             String uuid = "HL" + "0" + nextHotelNum;
             HotelListing hotel = new HotelListing(uuid, location, rating, price, name);
             bookingSystem.getHotels().add(hotel);
